@@ -501,17 +501,20 @@ export default function BookServicePage() {
   return (
     <Screen title="The Service" noTab>
       <Progress step={2} />
-      <div style={{ padding: "8px 22px 0" }}>
+      <div className="container-narrow" style={{ paddingTop: 8 }}>
         <Ey>Step 02 of 04</Ey>
-        <SH size={28} style={{ marginTop: 6, marginBottom: 4 }}>
+        <SH
+          size="clamp(28px, 3.4vw, 40px)"
+          style={{ marginTop: 6, marginBottom: 4 }}
+        >
           Build your service.
         </SH>
         <div
           style={{
-            fontSize: 12.5,
+            fontSize: "clamp(12.5px, 1.05vw, 15px)",
             color: "var(--mute)",
             marginBottom: 20,
-            lineHeight: 1.5,
+            lineHeight: 1.55,
           }}
         >
           Tell us your vehicle size for accurate pricing. Add services
@@ -520,12 +523,12 @@ export default function BookServicePage() {
       </div>
 
       {/* Vehicle tier picker */}
-      <div style={{ padding: "0 22px 22px" }}>
+      <div className="container-narrow" style={{ paddingBottom: 22 }}>
         <VehicleTierPicker tier={tier} onChange={setTier} />
       </div>
 
       {/* Bundles */}
-      <div style={{ padding: "0 22px 8px" }}>
+      <div className="container-narrow" style={{ paddingBottom: 8 }}>
         <div
           style={{
             display: "flex",
@@ -551,7 +554,10 @@ export default function BookServicePage() {
       </div>
 
       {/* À la carte */}
-      <div style={{ padding: "16px 22px 8px" }}>
+      <div
+        className="container-narrow"
+        style={{ paddingTop: 16, paddingBottom: 8 }}
+      >
         <div
           style={{
             display: "flex",
@@ -577,7 +583,10 @@ export default function BookServicePage() {
       </div>
 
       {/* Notes */}
-      <div style={{ padding: "16px 22px 24px" }}>
+      <div
+        className="container-narrow"
+        style={{ paddingTop: 16, paddingBottom: 24 }}
+      >
         <Ey style={{ marginBottom: 8 }}>Notes for the studio (optional)</Ey>
         <textarea
           value={notes}
@@ -598,14 +607,20 @@ export default function BookServicePage() {
         />
       </div>
 
-      {/* Sticky bottom estimate bar */}
+      {/* Sticky bottom estimate bar — full-width with content centered */}
       <div
         style={{
-          padding: "18px 22px",
           borderTop: "1px solid var(--line)",
           background: "var(--ink-2)",
+          position: "sticky",
+          bottom: 0,
+          zIndex: 5,
         }}
       >
+       <div
+         className="container-narrow"
+         style={{ paddingTop: 18, paddingBottom: 18 }}
+       >
         {picked.length === 0 ? (
           <div
             style={{
@@ -709,6 +724,7 @@ export default function BookServicePage() {
             </div>
           </>
         )}
+        </div>
       </div>
     </Screen>
   );

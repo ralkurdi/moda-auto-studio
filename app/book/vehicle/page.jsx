@@ -94,9 +94,18 @@ export default function BookVehiclePage() {
   return (
     <Screen title="The Vehicle" noTab>
       <Progress step={1} />
-      <div style={{ padding: "8px 22px" }}>
+      <div
+        className="container-narrow"
+        style={{
+          paddingTop: 8,
+          paddingBottom: "clamp(8px, 1vw, 16px)",
+        }}
+      >
         <Ey>Step 01 of 04</Ey>
-        <SH size={30} style={{ marginTop: 6, marginBottom: 22 }}>
+        <SH
+          size="clamp(30px, 3.6vw, 44px)"
+          style={{ marginTop: 6, marginBottom: "clamp(22px, 3vw, 36px)" }}
+        >
           What are we fitting?
         </SH>
         <SelField
@@ -181,7 +190,13 @@ export default function BookVehiclePage() {
           </div>
         </div>
       </div>
-      <div style={{ padding: 22 }}>
+      <div
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(16px, 2vw, 24px)",
+          paddingBottom: "clamp(22px, 3vw, 40px)",
+        }}
+      >
         <GBtn
           style={{ width: "100%" }}
           disabled={!valid}

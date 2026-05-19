@@ -15,9 +15,15 @@ export default function BookHubPage() {
   const router = useRouter();
   return (
     <Screen title="Book">
-      <div style={{ padding: "28px 22px 12px" }}>
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(28px, 4vw, 64px)",
+          paddingBottom: "clamp(36px, 5vw, 80px)",
+        }}
+      >
         <Ey>Reserve a bay</Ey>
-        <SH size={34} style={{ marginTop: 8 }}>
+        <SH size="clamp(34px, 4vw, 56px)" style={{ marginTop: 10 }}>
           A{" "}
           <span style={{ fontStyle: "italic", color: "var(--accent)" }}>
             four-step
@@ -26,56 +32,64 @@ export default function BookHubPage() {
         </SH>
         <div
           style={{
-            fontSize: 13,
+            fontSize: "clamp(13px, 1.15vw, 16px)",
             color: "var(--bone-2)",
-            marginTop: 12,
-            lineHeight: 1.55,
+            marginTop: 14,
+            lineHeight: 1.6,
+            maxWidth: 540,
           }}
         >
           Tell us the car, choose your service, pick a window. Jobs over $1,000
           require a $300 refundable deposit — fully refundable up to 72 hours
           before.
         </div>
-      </div>
-      <div style={{ padding: "20px 22px" }}>
-        {STEPS.map(([n, t, s], i) => (
-          <div
-            key={n}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "44px 1fr",
-              padding: "16px 0",
-              borderBottom: i < 3 ? "1px solid var(--line)" : "none",
-            }}
-          >
+        <div style={{ marginTop: "clamp(24px, 3vw, 44px)" }}>
+          {STEPS.map(([n, t, s], i) => (
             <div
+              key={n}
               style={{
-                fontFamily: "var(--mono)",
-                fontSize: 11,
-                color: "var(--accent)",
+                display: "grid",
+                gridTemplateColumns: "clamp(44px, 5vw, 64px) 1fr",
+                padding: "clamp(16px, 2vw, 24px) 0",
+                borderBottom:
+                  i < STEPS.length - 1 ? "1px solid var(--line)" : "none",
+                gap: 12,
               }}
             >
-              {n}
-            </div>
-            <div>
-              <div style={{ fontFamily: "var(--serif)", fontSize: 20 }}>
-                {t}
-              </div>
               <div
-                style={{ fontSize: 12, color: "var(--mute)", marginTop: 3 }}
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: 11,
+                  color: "var(--accent)",
+                }}
               >
-                {s}
+                {n}
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontFamily: "var(--serif)",
+                    fontSize: "clamp(20px, 1.8vw, 24px)",
+                  }}
+                >
+                  {t}
+                </div>
+                <div
+                  style={{ fontSize: 12, color: "var(--mute)", marginTop: 4 }}
+                >
+                  {s}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
         <GBtn
-          style={{ width: "100%", marginTop: 24 }}
+          style={{ width: "100%", marginTop: "clamp(24px, 3vw, 40px)" }}
           onClick={() => router.push("/book/vehicle")}
         >
           Begin fitting
         </GBtn>
-      </div>
+      </section>
     </Screen>
   );
 }

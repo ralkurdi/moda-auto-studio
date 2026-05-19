@@ -13,19 +13,25 @@ export default function WindowTintPage() {
 
   return (
     <Screen title="Tint Studio" noTab>
-      <div style={{ padding: "16px 22px 0" }}>
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(16px, 2.5vw, 40px)",
+          paddingBottom: "clamp(28px, 4vw, 56px)",
+        }}
+      >
         <Ey>Ceramic IR-blocking</Ey>
-        <SH size={28} style={{ marginTop: 6 }}>
+        <SH size="clamp(28px, 3.6vw, 48px)" style={{ marginTop: 6 }}>
           See through the film.
         </SH>
-      </div>
-      <div style={{ padding: "18px 22px" }}>
+
         <div
           style={{
             position: "relative",
-            height: 240,
+            height: "clamp(240px, 40vh, 480px)",
             border: "1px solid var(--line)",
             overflow: "hidden",
+            marginTop: "clamp(18px, 2.5vw, 36px)",
           }}
         >
           <div
@@ -38,6 +44,7 @@ export default function WindowTintPage() {
           />
           <svg
             viewBox="0 0 300 240"
+            preserveAspectRatio="xMidYMid slice"
             style={{
               position: "absolute",
               inset: 0,
@@ -94,57 +101,59 @@ export default function WindowTintPage() {
           <div
             style={{
               position: "absolute",
-              top: 12,
-              right: 12,
-              padding: "6px 10px",
+              top: 14,
+              right: 14,
+              padding: "8px 12px",
               border: "1px solid var(--accent)",
               color: "var(--accent)",
               fontFamily: "var(--mono)",
-              fontSize: 10,
+              fontSize: 11,
               letterSpacing: ".18em",
             }}
           >
             VLT {vlt}%
           </div>
         </div>
-      </div>
-      <div style={{ padding: "6px 22px 0" }}>
-        <input
-          type="range"
-          min="0"
-          max="4"
-          value={idx}
-          step="1"
-          onChange={(e) => setIdx(+e.target.value)}
-          style={{ width: "100%", accentColor: "var(--accent)" }}
-        />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: 8,
-          }}
-        >
-          {VLTs.map((v, i) => (
-            <button
-              key={v}
-              onClick={() => setIdx(i)}
-              style={{
-                color: idx === i ? "var(--accent)" : "var(--mute)",
-                fontFamily: "var(--mono)",
-                fontSize: 10,
-                letterSpacing: ".14em",
-              }}
-            >
-              {v}%
-            </button>
-          ))}
+
+        <div style={{ marginTop: "clamp(14px, 2vw, 24px)" }}>
+          <input
+            type="range"
+            min="0"
+            max="4"
+            value={idx}
+            step="1"
+            onChange={(e) => setIdx(+e.target.value)}
+            style={{ width: "100%", accentColor: "var(--accent)" }}
+          />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 8,
+            }}
+          >
+            {VLTs.map((v, i) => (
+              <button
+                key={v}
+                onClick={() => setIdx(i)}
+                style={{
+                  color: idx === i ? "var(--accent)" : "var(--mute)",
+                  fontFamily: "var(--mono)",
+                  fontSize: 10,
+                  letterSpacing: ".14em",
+                  cursor: "pointer",
+                }}
+              >
+                {v}%
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
-      <div style={{ padding: "18px 22px 8px" }}>
+
         <div
           style={{
-            padding: 14,
+            marginTop: "clamp(20px, 2.5vw, 36px)",
+            padding: "clamp(14px, 1.8vw, 24px)",
             background: "var(--ink-2)",
             border: "1px solid var(--line)",
           }}
@@ -155,7 +164,7 @@ export default function WindowTintPage() {
           <div
             style={{
               fontFamily: "var(--serif)",
-              fontSize: 20,
+              fontSize: "clamp(20px, 2vw, 26px)",
               marginTop: 4,
             }}
           >
@@ -167,10 +176,10 @@ export default function WindowTintPage() {
           </div>
           <div
             style={{
-              fontSize: 12,
+              fontSize: "clamp(12px, 1vw, 14px)",
               color: "var(--bone-2)",
-              marginTop: 8,
-              lineHeight: 1.5,
+              marginTop: 10,
+              lineHeight: 1.55,
             }}
           >
             {vlt <= 35
@@ -178,12 +187,11 @@ export default function WindowTintPage() {
               : "Fully street-legal all-around. Rejects up to 88% of infrared heat."}
           </div>
         </div>
-      </div>
-      <div style={{ padding: "18px 22px 22px" }}>
-        <GBtn style={{ width: "100%" }}>
+
+        <GBtn style={{ width: "100%", marginTop: "clamp(18px, 2.5vw, 32px)" }}>
           Add to quote · ${vlt <= 20 ? "1,295" : vlt <= 35 ? "1,195" : "1,095"}
         </GBtn>
-      </div>
+      </section>
     </Screen>
   );
 }

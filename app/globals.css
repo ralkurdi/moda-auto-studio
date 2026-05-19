@@ -75,3 +75,35 @@ input, textarea, select {
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px) } to { opacity: 1; transform: none } }
 @keyframes spin   { to { transform: rotate(360deg) } }
 .fade-up { animation: fadeUp .3s ease both; }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Responsive utilities — single breakpoint at 768px.
+   Mobile = <768px. Desktop = ≥768px.
+   `mobile-only` / `desktop-only` toggle visibility via CSS so both chromes
+   render server-side and no JS-driven layout flash occurs on hydration.
+   ─────────────────────────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+  .mobile-only { display: none !important; }
+}
+@media (max-width: 767px) {
+  .desktop-only { display: none !important; }
+}
+
+/* Content centering containers — mobile fills width with edge padding;
+   desktop caps width and centers. */
+.container        { width: 100%; padding: 0 22px; margin: 0 auto; }
+.container-narrow { width: 100%; padding: 0 22px; margin: 0 auto; }
+@media (min-width: 768px) {
+  .container        { max-width: 1200px; padding: 0 40px; }
+  .container-narrow { max-width: 720px;  padding: 0 40px; }
+}
+
+/* Responsive grids — 1 column on mobile, N on desktop. */
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr 1fr;         gap: 24px; }
+  .grid-3 { grid-template-columns: 1fr 1fr 1fr;     gap: 24px; }
+  .grid-4 { grid-template-columns: repeat(4, 1fr);  gap: 20px; }
+}

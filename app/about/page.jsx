@@ -23,30 +23,53 @@ export default function AboutPage() {
   const router = useRouter();
   return (
     <Screen title="The Studio">
-      <div style={{ position: "relative" }}>
-        <Ph h={260} label="Studio · South San Francisco" />
+      {/* Hero photo strip — full bleed on mobile, contained but tall on desktop */}
+      <section style={{ position: "relative", flexShrink: 0 }}>
+        <Ph
+          h="clamp(260px, 45vh, 540px)"
+          label="Studio · South San Francisco"
+        />
         <div
+          className="container"
           style={{
             position: "absolute",
-            right: 18,
-            bottom: -30,
-            background: "var(--ink)",
-            border: "1px solid var(--line)",
-            padding: 10,
+            inset: 0,
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            paddingBottom: 0,
+            pointerEvents: "none",
           }}
         >
-          <Crest size={76} />
+          <div
+            style={{
+              background: "var(--ink)",
+              border: "1px solid var(--line)",
+              padding: "clamp(10px, 1.2vw, 16px)",
+              transform: "translateY(50%)",
+              pointerEvents: "auto",
+            }}
+          >
+            <Crest size={76} />
+          </div>
         </div>
-      </div>
-      <div style={{ padding: "48px 22px 36px" }}>
-        <SH size={40} style={{ marginTop: 8 }}>
+      </section>
+
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(48px, 6vw, 96px)",
+          paddingBottom: "clamp(36px, 5vw, 80px)",
+        }}
+      >
+        <SH size="clamp(40px, 5vw, 64px)" style={{ marginTop: 8 }}>
           A garage, quieter.
         </SH>
         <div
           style={{
-            fontSize: 14,
+            fontSize: "clamp(14px, 1.2vw, 17px)",
             color: "var(--bone-2)",
-            marginTop: 14,
+            marginTop: 16,
             lineHeight: 1.6,
           }}
         >
@@ -58,28 +81,24 @@ export default function AboutPage() {
         </div>
         <div
           style={{
-            fontSize: 14,
+            fontSize: "clamp(14px, 1.2vw, 17px)",
             color: "var(--bone-2)",
-            marginTop: 12,
+            marginTop: 14,
             lineHeight: 1.6,
           }}
         >
           One car in, one car out. Appointments only. Coffee always.
         </div>
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 16,
-            marginTop: 28,
-          }}
+          className="grid-4"
+          style={{ marginTop: "clamp(28px, 4vw, 56px)" }}
         >
           {CERTS.map(([cert, cat]) => (
             <div
               key={cert}
               style={{
                 border: "1px solid var(--line)",
-                padding: 14,
+                padding: "clamp(14px, 1.6vw, 22px)",
                 background: "var(--ink-2)",
               }}
             >
@@ -87,8 +106,8 @@ export default function AboutPage() {
               <div
                 style={{
                   fontFamily: "var(--serif)",
-                  fontSize: 16,
-                  marginTop: 4,
+                  fontSize: "clamp(16px, 1.4vw, 19px)",
+                  marginTop: 6,
                 }}
               >
                 {cert}
@@ -96,25 +115,26 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
-        <div style={{ marginTop: 28 }}>
+        <div style={{ marginTop: "clamp(28px, 4vw, 56px)" }}>
           <Ey>Contact</Ey>
           {CONTACT.map(([k, v], i) => (
             <div
               key={i}
               style={{
                 display: "grid",
-                gridTemplateColumns: "80px 1fr",
-                padding: "12px 0",
+                gridTemplateColumns: "100px 1fr",
+                padding: "clamp(12px, 1.4vw, 18px) 0",
                 borderBottom: "1px solid var(--line)",
+                gap: 16,
               }}
             >
               <Ey>{k}</Ey>
-              <div style={{ fontSize: 14 }}>{v}</div>
+              <div style={{ fontSize: "clamp(14px, 1.15vw, 16px)" }}>{v}</div>
             </div>
           ))}
         </div>
         <GBtn
-          style={{ width: "100%", marginTop: 24 }}
+          style={{ width: "100%", marginTop: "clamp(24px, 3vw, 40px)" }}
           onClick={() => router.push("/book")}
         >
           Book your fitting
@@ -126,7 +146,7 @@ export default function AboutPage() {
         >
           Read all reviews
         </GBtn>
-      </div>
+      </section>
     </Screen>
   );
 }

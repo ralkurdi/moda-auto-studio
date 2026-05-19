@@ -1,15 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {
-  Ey,
-  SH,
-  GBtn,
-  Rule,
-  Crest,
-  Ph,
-  ChevronR,
-} from "./_lib/design";
+import { Ey, SH, GBtn, Rule, Crest, Ph, ChevronR } from "./_lib/design";
 import { Screen } from "./_components/screen-shell";
 
 const SERVICE_ROWS = [
@@ -53,29 +45,44 @@ const BUNDLES_TEASER = [
 
 export default function HomePage() {
   const router = useRouter();
+
   return (
     <Screen title="MODA" right={<Ey>SSF · CA</Ey>}>
-      {/* Hero */}
-      <div style={{ position: "relative", height: 440, flexShrink: 0 }}>
-        <Ph h={440} label="Hero · matte-black wrapped 911" />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(180deg,rgba(11,11,12,0) 40%,rgba(11,11,12,0.88) 95%)",
-          }}
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <section
+        style={{
+          position: "relative",
+          height: "clamp(440px, 70vh, 720px)",
+          flexShrink: 0,
+          overflow: "hidden",
+        }}
+      >
+        <Ph
+          h="100%"
+          label="Hero · matte-black wrapped 911"
+          style={{ position: "absolute", inset: 0, height: "100%" }}
         />
         <div
           style={{
             position: "absolute",
             inset: 0,
-            padding: "24px 22px",
+            background:
+              "linear-gradient(180deg,rgba(11,11,12,0.1) 30%,rgba(11,11,12,0.92) 95%)",
+          }}
+        />
+        <div
+          className="container"
+          style={{
+            position: "absolute",
+            inset: 0,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
+            paddingTop: 24,
+            paddingBottom: 32,
           }}
         >
+          {/* Top row — tagline + crest (crest is mobile-only; desktop has it in nav) */}
           <div
             style={{
               display: "flex",
@@ -84,12 +91,17 @@ export default function HomePage() {
             }}
           >
             <Ey style={{ color: "var(--bone-2)" }}>South San Francisco</Ey>
-            <div style={{ opacity: 0.9 }}>
+            <div className="mobile-only" style={{ opacity: 0.9 }}>
               <Crest size={58} />
             </div>
           </div>
-          <div>
-            <SH size={46} style={{ maxWidth: 320 }}>
+
+          {/* Bottom row — headline + ctas */}
+          <div style={{ maxWidth: 640 }}>
+            <SH
+              size="clamp(2.9rem, 5.8vw, 5rem)"
+              style={{ maxWidth: 540, lineHeight: 1.02 }}
+            >
               The finish{" "}
               <span style={{ fontStyle: "italic", color: "var(--accent)" }}>
                 your car deserved
@@ -98,17 +110,19 @@ export default function HomePage() {
             </SH>
             <div
               style={{
-                fontSize: 13.5,
+                fontSize: "clamp(13.5px, 1.15vw, 16px)",
                 color: "var(--bone-2)",
-                marginTop: 14,
-                lineHeight: 1.5,
-                maxWidth: 300,
+                marginTop: 16,
+                lineHeight: 1.55,
+                maxWidth: 460,
               }}
             >
-              Vinyl wraps, paint protection film, and window tinting —
-              installed by hand in a climate-controlled studio.
+              Vinyl wraps, paint protection film, and window tinting — installed
+              by hand in a climate-controlled studio.
             </div>
-            <div style={{ display: "flex", gap: 10, marginTop: 20 }}>
+            <div
+              style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}
+            >
               <GBtn onClick={() => router.push("/book")}>Book a fitting</GBtn>
               <GBtn v="ghost" onClick={() => router.push("/work")}>
                 See work
@@ -116,16 +130,19 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Services */}
-      <div style={{ padding: "28px 22px 8px" }}>
+      {/* ── SERVICES ─────────────────────────────────────────────────── */}
+      <section
+        className="container"
+        style={{ paddingTop: "clamp(36px, 5vw, 88px)", paddingBottom: 8 }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "baseline",
-            marginBottom: 14,
+            marginBottom: "clamp(14px, 2vw, 28px)",
           }}
         >
           <Ey>01 · Services</Ey>
@@ -140,9 +157,9 @@ export default function HomePage() {
                 background: "transparent",
                 color: "inherit",
                 textAlign: "left",
-                padding: "18px 0",
+                padding: "clamp(18px, 2.4vw, 28px) 0",
                 display: "grid",
-                gridTemplateColumns: "44px 1fr auto",
+                gridTemplateColumns: "clamp(44px, 6vw, 64px) 1fr auto",
                 alignItems: "center",
                 gap: 14,
               }}
@@ -152,14 +169,18 @@ export default function HomePage() {
                 <div
                   style={{
                     fontFamily: "var(--serif)",
-                    fontSize: 22,
+                    fontSize: "clamp(22px, 2.4vw, 32px)",
                     lineHeight: 1.1,
                   }}
                 >
                   {s.title}
                 </div>
                 <div
-                  style={{ fontSize: 12, color: "var(--mute)", marginTop: 3 }}
+                  style={{
+                    fontSize: "clamp(12px, 1vw, 14px)",
+                    color: "var(--mute)",
+                    marginTop: 5,
+                  }}
                 >
                   {s.body}
                 </div>
@@ -171,19 +192,18 @@ export default function HomePage() {
             {i < arr.length - 1 && <Rule />}
           </div>
         ))}
-      </div>
+      </section>
 
-      {/* Bundles teaser */}
-      <div style={{ padding: "0 22px 10px" }}>
+      {/* ── BUNDLES TEASER ───────────────────────────────────────────── */}
+      <section
+        className="container"
+        style={{
+          paddingTop: "clamp(28px, 4vw, 64px)",
+          paddingBottom: "clamp(10px, 1.5vw, 24px)",
+        }}
+      >
         <Ey>02 · Protection packages</Ey>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gap: 8,
-            marginTop: 14,
-          }}
-        >
+        <div className="grid-3" style={{ marginTop: "clamp(14px, 2vw, 24px)" }}>
           {BUNDLES_TEASER.map(([n, d]) => (
             <button
               key={n}
@@ -191,9 +211,11 @@ export default function HomePage() {
               style={{
                 background: "var(--ink-2)",
                 border: "1px solid var(--line)",
-                padding: 12,
+                padding: "clamp(14px, 2vw, 22px)",
                 textAlign: "left",
                 color: "inherit",
+                cursor: "pointer",
+                transition: "border-color .15s",
               }}
             >
               <Ey
@@ -205,10 +227,10 @@ export default function HomePage() {
               </Ey>
               <div
                 style={{
-                  fontSize: 10,
-                  color: "var(--mute)",
-                  marginTop: 8,
-                  lineHeight: 1.4,
+                  fontSize: "clamp(11px, 1vw, 14px)",
+                  color: "var(--bone-2)",
+                  marginTop: 10,
+                  lineHeight: 1.5,
                 }}
               >
                 {d}
@@ -220,8 +242,8 @@ export default function HomePage() {
           onClick={() => router.push("/book")}
           style={{
             width: "100%",
-            marginTop: 10,
-            padding: "12px 16px",
+            marginTop: 14,
+            padding: "14px 16px",
             background: "transparent",
             border: "1px solid var(--line)",
             color: "var(--bone-2)",
@@ -230,33 +252,43 @@ export default function HomePage() {
             letterSpacing: ".18em",
             textTransform: "uppercase",
             textAlign: "center",
+            cursor: "pointer",
           }}
         >
           Get a quote →
         </button>
-      </div>
+      </section>
 
-      {/* Review */}
-      <div style={{ padding: "28px 22px 40px" }}>
-        <Ey>03 · What owners say</Ey>
+      {/* ── FEATURED REVIEW ──────────────────────────────────────────── */}
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(32px, 5vw, 80px)",
+          paddingBottom: "clamp(40px, 6vw, 96px)",
+          textAlign: "center",
+        }}
+      >
+        <Ey style={{ textAlign: "center" }}>03 · What owners say</Ey>
         <div
           style={{
-            marginTop: 16,
+            marginTop: 24,
             fontFamily: "var(--serif)",
-            fontSize: 22,
+            fontSize: "clamp(22px, 2.6vw, 34px)",
             lineHeight: 1.3,
             fontStyle: "italic",
           }}
         >
           &ldquo;They treated my M4 like a gallery piece. I picked it up and
-          genuinely didn&rsquo;t recognize it &mdash; in the best way.&rdquo;
+          genuinely didn&rsquo;t recognize it — in the best way.&rdquo;
         </div>
         <div
           style={{
-            marginTop: 14,
+            marginTop: 18,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            flexWrap: "wrap",
+            gap: 8,
           }}
         >
           <Ey>&mdash; Daniel K. · Burlingame</Ey>
@@ -268,12 +300,13 @@ export default function HomePage() {
               fontSize: 10,
               letterSpacing: ".18em",
               textTransform: "uppercase",
+              cursor: "pointer",
             }}
           >
             All reviews →
           </button>
         </div>
-      </div>
+      </section>
     </Screen>
   );
 }

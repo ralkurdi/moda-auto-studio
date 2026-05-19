@@ -48,22 +48,36 @@ export default function WorkPage() {
   const router = useRouter();
   return (
     <Screen title="Portfolio">
-      <div style={{ padding: "20px 22px 12px" }}>
+      <section
+        className="container"
+        style={{
+          paddingTop: "clamp(20px, 3vw, 56px)",
+          paddingBottom: "clamp(12px, 1.5vw, 24px)",
+        }}
+      >
         <Ey>Before / After</Ey>
-        <SH size={28} style={{ marginTop: 6, marginBottom: 14 }}>
+        <SH
+          size="clamp(28px, 3.6vw, 48px)"
+          style={{
+            marginTop: 6,
+            marginBottom: "clamp(14px, 2vw, 28px)",
+          }}
+        >
           Drag to reveal.
         </SH>
         <BeforeAfter label="BMW M4 · satin black" />
-      </div>
-      <div style={{ padding: "8px 22px 36px" }}>
-        <Ey style={{ marginTop: 20 }}>Recent work</Ey>
+      </section>
+      <section
+        className="container"
+        style={{
+          paddingTop: "clamp(20px, 2.5vw, 40px)",
+          paddingBottom: "clamp(36px, 5vw, 80px)",
+        }}
+      >
+        <Ey>Recent work</Ey>
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 10,
-            marginTop: 14,
-          }}
+          className="grid-3"
+          style={{ marginTop: "clamp(14px, 2vw, 28px)" }}
         >
           {ITEMS.map((it, i) => (
             <button
@@ -74,23 +88,30 @@ export default function WorkPage() {
                 border: "1px solid var(--line)",
                 color: "inherit",
                 textAlign: "left",
+                cursor: "pointer",
+                transition: "border-color .15s",
+                background: "var(--ink-2)",
               }}
             >
-              <Ph h={120} label={it.t} />
-              <div style={{ padding: 10 }}>
+              <Ph h={160} label={it.t} />
+              <div style={{ padding: "clamp(10px, 1.2vw, 16px)" }}>
                 <Ey style={{ color: "var(--accent)" }}>{it.tag}</Ey>
                 <div
                   style={{
                     fontFamily: "var(--serif)",
-                    fontSize: 15,
-                    marginTop: 4,
+                    fontSize: "clamp(15px, 1.3vw, 18px)",
+                    marginTop: 6,
                     lineHeight: 1.15,
                   }}
                 >
                   {it.t}
                 </div>
                 <div
-                  style={{ fontSize: 11, color: "var(--mute)", marginTop: 3 }}
+                  style={{
+                    fontSize: 11,
+                    color: "var(--mute)",
+                    marginTop: 4,
+                  }}
                 >
                   {it.s}
                 </div>
@@ -98,7 +119,7 @@ export default function WorkPage() {
             </button>
           ))}
         </div>
-      </div>
+      </section>
     </Screen>
   );
 }

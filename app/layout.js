@@ -34,7 +34,6 @@ export const viewport = {
   themeColor: "#0B0B0C",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
 };
 
 export default function RootLayout({ children }) {
@@ -43,21 +42,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${cormorant.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body>
-        <div
-          style={{
-            height: "100vh",
-            maxWidth: 480,
-            margin: "0 auto",
-            background: "var(--ink)",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-          }}
-        >
-          {children}
-        </div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

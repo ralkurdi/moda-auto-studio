@@ -36,9 +36,12 @@ export default function BookDatePage() {
   return (
     <Screen title="Pick a Window" noTab>
       <Progress step={3} />
-      <div style={{ padding: "8px 22px" }}>
+      <div className="container-narrow" style={{ paddingTop: 8 }}>
         <Ey>Step 03 of 04</Ey>
-        <SH size={30} style={{ marginTop: 6, marginBottom: 16 }}>
+        <SH
+          size="clamp(30px, 3.6vw, 44px)"
+          style={{ marginTop: 6, marginBottom: 16 }}
+        >
           Live bay availability.
         </SH>
         <div
@@ -161,7 +164,7 @@ export default function BookDatePage() {
         </div>
       </div>
       {date && (
-        <div style={{ padding: "20px 22px" }}>
+        <div className="container-narrow" style={{ paddingTop: 20, paddingBottom: 20 }}>
           <Ey>Times · {fmt(date)}</Ey>
           <div
             style={{
@@ -197,7 +200,13 @@ export default function BookDatePage() {
           </div>
         </div>
       )}
-      <div style={{ padding: 22 }}>
+      <div
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(16px, 2vw, 24px)",
+          paddingBottom: "clamp(22px, 3vw, 40px)",
+        }}
+      >
         <GBtn
           style={{ width: "100%" }}
           disabled={!(date && slot)}

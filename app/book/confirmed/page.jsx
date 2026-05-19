@@ -35,7 +35,14 @@ export default function BookConfirmedPage() {
 
   return (
     <Screen title="Confirmed" noTab>
-      <div style={{ padding: "40px 22px 30px", textAlign: "center" }}>
+      <div
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(40px, 5vw, 80px)",
+          paddingBottom: "clamp(30px, 4vw, 56px)",
+          textAlign: "center",
+        }}
+      >
         <div
           style={{
             display: "inline-flex",
@@ -82,7 +89,7 @@ export default function BookConfirmedPage() {
             : "A confirmation text is on its way."}
         </div>
       </div>
-      <div style={{ padding: "0 22px" }}>
+      <div className="container-narrow">
         <Ey>Text confirmation</Ey>
         <div
           style={{
@@ -168,7 +175,13 @@ export default function BookConfirmedPage() {
           </div>
         </div>
       </div>
-      <div style={{ padding: "24px 22px" }}>
+      <div
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(24px, 3vw, 40px)",
+          paddingBottom: "clamp(8px, 1vw, 16px)",
+        }}
+      >
         <Ey>What happens next</Ey>
         {NEXT.map(([w, t], i) => (
           <div
@@ -185,7 +198,10 @@ export default function BookConfirmedPage() {
           </div>
         ))}
       </div>
-      <div style={{ padding: "0 22px 32px" }}>
+      <div
+        className="container-narrow"
+        style={{ paddingBottom: "clamp(32px, 4vw, 56px)" }}
+      >
         <GBtn
           v="ghost"
           style={{ width: "100%" }}

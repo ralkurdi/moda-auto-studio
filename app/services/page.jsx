@@ -77,82 +77,98 @@ export default function ServicesPage() {
   const router = useRouter();
   return (
     <Screen title="Services">
-      <div style={{ padding: "20px 22px 32px" }}>
+      <section
+        className="container"
+        style={{
+          paddingTop: "clamp(20px, 3vw, 56px)",
+          paddingBottom: "clamp(32px, 5vw, 80px)",
+        }}
+      >
         <Ey>Studio disciplines</Ey>
-        <SH size={36} style={{ marginTop: 8, marginBottom: 20 }}>
+        <SH
+          size="clamp(36px, 4.5vw, 64px)"
+          style={{
+            marginTop: 8,
+            marginBottom: "clamp(20px, 3vw, 40px)",
+          }}
+        >
           Every finish, one roof.
         </SH>
-        {CATS.map((c, i) => (
-          <button
-            key={i}
-            onClick={() => router.push(c.href)}
-            style={{
-              width: "100%",
-              textAlign: "left",
-              background: "var(--ink-2)",
-              border: "1px solid var(--line)",
-              padding: 18,
-              marginBottom: 10,
-              color: "inherit",
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              gap: 10,
-            }}
-          >
-            <div>
-              <Ey style={{ color: "var(--accent)" }}>{c.kicker}</Ey>
-              <div
-                style={{
-                  fontFamily: "var(--serif)",
-                  fontSize: 22,
-                  marginTop: 4,
-                }}
-              >
-                {c.title}
-              </div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: "var(--mute)",
-                  marginTop: 8,
-                  lineHeight: 1.7,
-                }}
-              >
-                {c.bullets.map((b, j) => (
-                  <div key={j}>· {b}</div>
-                ))}
-              </div>
-            </div>
-            <div
+        <div className="grid-2">
+          {CATS.map((c, i) => (
+            <button
+              key={i}
+              onClick={() => router.push(c.href)}
               style={{
-                textAlign: "right",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
+                width: "100%",
+                textAlign: "left",
+                background: "var(--ink-2)",
+                border: "1px solid var(--line)",
+                padding: "clamp(18px, 2vw, 28px)",
+                color: "inherit",
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: 14,
+                cursor: "pointer",
+                transition: "border-color .15s",
               }}
             >
-              <Ey>From</Ey>
+              <div>
+                <Ey style={{ color: "var(--accent)" }}>{c.kicker}</Ey>
+                <div
+                  style={{
+                    fontFamily: "var(--serif)",
+                    fontSize: "clamp(22px, 2.2vw, 28px)",
+                    marginTop: 4,
+                    lineHeight: 1.15,
+                  }}
+                >
+                  {c.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: "var(--mute)",
+                    marginTop: 10,
+                    lineHeight: 1.7,
+                  }}
+                >
+                  {c.bullets.map((b, j) => (
+                    <div key={j}>· {b}</div>
+                  ))}
+                </div>
+              </div>
               <div
                 style={{
-                  fontFamily: "var(--serif)",
-                  fontSize: 22,
-                  color: "var(--bone)",
+                  textAlign: "right",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  alignItems: "flex-end",
                 }}
               >
-                {c.from}
+                <Ey>From</Ey>
+                <div
+                  style={{
+                    fontFamily: "var(--serif)",
+                    fontSize: "clamp(20px, 2vw, 26px)",
+                    color: "var(--bone)",
+                  }}
+                >
+                  {c.from}
+                </div>
+                <span style={{ color: "var(--accent)" }}>
+                  <ChevronR />
+                </span>
               </div>
-              <span style={{ color: "var(--accent)" }}>
-                <ChevronR />
-              </span>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))}
+        </div>
         <button
           onClick={() => router.push("/pricing")}
           style={{
             width: "100%",
-            marginTop: 10,
+            marginTop: 16,
             padding: 16,
             border: "1px dashed var(--line)",
             color: "var(--bone-2)",
@@ -160,11 +176,12 @@ export default function ServicesPage() {
             fontSize: 11,
             letterSpacing: ".18em",
             textTransform: "uppercase",
+            cursor: "pointer",
           }}
         >
           View full price sheet →
         </button>
-      </div>
+      </section>
     </Screen>
   );
 }

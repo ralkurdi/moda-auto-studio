@@ -24,42 +24,54 @@ export default function VinylWrapsPage() {
   const router = useRouter();
   return (
     <Screen title="Vinyl Wraps">
-      <Ph h={240} label="Gloss midnight blue · R8 Spyder" />
-      <div style={{ padding: "24px 22px 32px" }}>
+      <section style={{ flexShrink: 0 }}>
+        <Ph
+          h="clamp(240px, 40vh, 480px)"
+          label="Gloss midnight blue · R8 Spyder"
+        />
+      </section>
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(24px, 3vw, 56px)",
+          paddingBottom: "clamp(36px, 5vw, 80px)",
+        }}
+      >
         <Ey style={{ color: "var(--accent)" }}>Signature service</Ey>
-        <SH size={38} style={{ marginTop: 8 }}>
+        <SH size="clamp(38px, 4.5vw, 64px)" style={{ marginTop: 8 }}>
           Color-change wraps.
         </SH>
         <div
           style={{
-            fontSize: 14,
+            fontSize: "clamp(14px, 1.2vw, 17px)",
             color: "var(--bone-2)",
-            marginTop: 14,
-            lineHeight: 1.55,
+            marginTop: 16,
+            lineHeight: 1.6,
           }}
         >
           Premium cast films from 3M, Avery Dennison, and KPMF — applied
           panel-by-panel with wrapped edges and tucked seams you won&rsquo;t
           find from the curb.
         </div>
-        <Rule style={{ margin: "24px 0" }} />
+
+        <Rule style={{ margin: "clamp(24px, 3vw, 40px) 0" }} />
+
         <Ey>Film families</Ey>
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 10,
-            marginTop: 12,
-          }}
+          className="grid-3"
+          style={{ marginTop: "clamp(12px, 1.6vw, 24px)" }}
         >
           {FILMS.map((f) => (
             <div
               key={f.n}
-              style={{ padding: 12, border: "1px solid var(--line)" }}
+              style={{
+                padding: "clamp(12px, 1.4vw, 18px)",
+                border: "1px solid var(--line)",
+              }}
             >
               <div
                 style={{
-                  height: 56,
+                  height: "clamp(56px, 8vw, 90px)",
                   background: f.c,
                   border: "1px solid var(--line)",
                 }}
@@ -68,7 +80,7 @@ export default function VinylWrapsPage() {
                 style={{
                   marginTop: 10,
                   fontFamily: "var(--serif)",
-                  fontSize: 18,
+                  fontSize: "clamp(18px, 1.6vw, 22px)",
                 }}
               >
                 {f.n}
@@ -76,12 +88,14 @@ export default function VinylWrapsPage() {
             </div>
           ))}
         </div>
-        <Rule style={{ margin: "28px 0" }} />
+
+        <Rule style={{ margin: "clamp(28px, 4vw, 56px) 0" }} />
+
         <button
           onClick={() => router.push("/visualizer")}
           style={{
             width: "100%",
-            padding: 20,
+            padding: "clamp(18px, 2vw, 28px)",
             background: "var(--ink-2)",
             border: "1px solid var(--accent)",
             color: "var(--accent)",
@@ -92,21 +106,24 @@ export default function VinylWrapsPage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            cursor: "pointer",
           }}
         >
           Open the color visualizer <span>→</span>
         </button>
-        <div style={{ marginTop: 24 }}>
+
+        <div style={{ marginTop: "clamp(24px, 3vw, 48px)" }}>
           <Ey>Timeline</Ey>
           {TIMELINE.map(([d, t], i) => (
             <div
               key={i}
               style={{
                 display: "grid",
-                gridTemplateColumns: "80px 1fr",
-                padding: "14px 0",
+                gridTemplateColumns: "clamp(80px, 8vw, 120px) 1fr",
+                padding: "clamp(14px, 1.6vw, 20px) 0",
                 borderBottom: "1px solid var(--line)",
                 alignItems: "baseline",
+                gap: 16,
               }}
             >
               <div
@@ -118,14 +135,15 @@ export default function VinylWrapsPage() {
               >
                 {d}
               </div>
-              <div style={{ fontSize: 14 }}>{t}</div>
+              <div style={{ fontSize: "clamp(14px, 1.15vw, 16px)" }}>{t}</div>
             </div>
           ))}
         </div>
+
         <div
           style={{
-            marginTop: 20,
-            padding: 14,
+            marginTop: "clamp(20px, 2.5vw, 36px)",
+            padding: "clamp(14px, 1.8vw, 24px)",
             background: "var(--ink-2)",
             border: "1px solid var(--line)",
           }}
@@ -134,13 +152,13 @@ export default function VinylWrapsPage() {
           <div
             style={{
               fontFamily: "var(--serif)",
-              fontSize: 32,
+              fontSize: "clamp(32px, 3.6vw, 48px)",
               marginTop: 4,
               color: "var(--bone)",
             }}
           >
             $4,500{" "}
-            <span style={{ fontSize: 14, color: "var(--mute)" }}>
+            <span style={{ fontSize: "clamp(14px, 1.2vw, 17px)", color: "var(--mute)" }}>
               sedan · full color change
             </span>
           </div>
@@ -151,7 +169,7 @@ export default function VinylWrapsPage() {
         >
           Reserve a bay
         </GBtn>
-      </div>
+      </section>
     </Screen>
   );
 }

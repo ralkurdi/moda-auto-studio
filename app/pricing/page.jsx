@@ -17,11 +17,7 @@ const BUNDLES = [
     "Full-body PPF + 9yr ceramic + full tint + 2yr detail",
   ],
   ["Tesla / EV", "$4,995–$6,495", "Optimized for Tesla, Lucid, Rivian"],
-  [
-    "Track Day",
-    "$3,495",
-    "Front PPF + windshield ceramic + headlight PPF",
-  ],
+  ["Track Day", "$3,495", "Front PPF + windshield ceramic + headlight PPF"],
 ];
 
 const GROUPS = [
@@ -78,14 +74,23 @@ export default function PricingPage() {
   const router = useRouter();
   return (
     <Screen title="Price Sheet">
-      <div style={{ padding: "20px 22px 40px" }}>
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(20px, 3vw, 56px)",
+          paddingBottom: "clamp(36px, 5vw, 80px)",
+        }}
+      >
         <Ey>Published rates</Ey>
-        <SH size={32} style={{ marginTop: 6, marginBottom: 18 }}>
+        <SH
+          size="clamp(32px, 4vw, 56px)"
+          style={{ marginTop: 6, marginBottom: "clamp(18px, 2.5vw, 36px)" }}
+        >
           Honest numbers.
         </SH>
 
         {/* Bundles */}
-        <div style={{ marginBottom: 28 }}>
+        <div style={{ marginBottom: "clamp(28px, 4vw, 56px)" }}>
           <div
             style={{
               display: "flex",
@@ -101,7 +106,7 @@ export default function PricingPage() {
             <div
               key={i}
               style={{
-                padding: "14px 0",
+                padding: "clamp(14px, 1.6vw, 22px) 0",
                 borderBottom: "1px solid var(--line)",
               }}
             >
@@ -109,11 +114,12 @@ export default function PricingPage() {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
+                  gap: 12,
                 }}
               >
                 <span
                   style={{
-                    fontSize: 14,
+                    fontSize: "clamp(14px, 1.3vw, 17px)",
                     color: k.includes("most")
                       ? "var(--accent)"
                       : "var(--bone)",
@@ -124,16 +130,15 @@ export default function PricingPage() {
                 <span
                   style={{
                     fontFamily: "var(--mono)",
-                    fontSize: 13,
+                    fontSize: "clamp(13px, 1.1vw, 15px)",
                     color: "var(--bone-2)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {v}
                 </span>
               </div>
-              <div
-                style={{ fontSize: 11, color: "var(--mute)", marginTop: 3 }}
-              >
+              <div style={{ fontSize: 11, color: "var(--mute)", marginTop: 4 }}>
                 {d}
               </div>
             </div>
@@ -141,7 +146,7 @@ export default function PricingPage() {
         </div>
 
         {GROUPS.map((g) => (
-          <div key={g.head} style={{ marginBottom: 28 }}>
+          <div key={g.head} style={{ marginBottom: "clamp(28px, 4vw, 56px)" }}>
             <div
               style={{
                 display: "flex",
@@ -151,9 +156,7 @@ export default function PricingPage() {
               }}
             >
               <Ey style={{ color: "var(--accent)" }}>{g.head}</Ey>
-              <div
-                style={{ flex: 1, height: 1, background: "var(--line)" }}
-              />
+              <div style={{ flex: 1, height: 1, background: "var(--line)" }} />
             </div>
             {g.rows.map(([k, v], i) => (
               <div
@@ -161,16 +164,20 @@ export default function PricingPage() {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  padding: "12px 0",
+                  gap: 12,
+                  padding: "clamp(12px, 1.4vw, 18px) 0",
                   borderBottom: "1px solid var(--line)",
                 }}
               >
-                <span style={{ fontSize: 13.5 }}>{k}</span>
+                <span style={{ fontSize: "clamp(13.5px, 1.15vw, 15px)" }}>
+                  {k}
+                </span>
                 <span
                   style={{
                     fontFamily: "var(--mono)",
-                    fontSize: 13,
+                    fontSize: "clamp(13px, 1.1vw, 15px)",
                     color: "var(--bone-2)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {v}
@@ -182,23 +189,23 @@ export default function PricingPage() {
         <div
           style={{
             marginTop: 8,
-            padding: 16,
+            padding: "clamp(14px, 1.8vw, 24px)",
             border: "1px dashed var(--line)",
             color: "var(--mute)",
-            fontSize: 12,
-            lineHeight: 1.5,
+            fontSize: "clamp(12px, 1vw, 13.5px)",
+            lineHeight: 1.55,
           }}
         >
           Prices are starting points for typical vehicles in good paint
           condition. Final quote after intake consultation.
         </div>
         <GBtn
-          style={{ width: "100%", marginTop: 20 }}
+          style={{ width: "100%", marginTop: "clamp(20px, 2.5vw, 36px)" }}
           onClick={() => router.push("/book")}
         >
           Book a consultation
         </GBtn>
-      </div>
+      </section>
     </Screen>
   );
 }

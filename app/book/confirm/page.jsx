@@ -70,15 +70,18 @@ export default function BookConfirmPage() {
   return (
     <Screen title="Confirm" noTab>
       <Progress step={4} />
-      <div style={{ padding: "8px 22px 0" }}>
+      <div className="container-narrow" style={{ paddingTop: 8 }}>
         <Ey>Step 04 of 04</Ey>
-        <SH size={30} style={{ marginTop: 6, marginBottom: 16 }}>
+        <SH
+          size="clamp(30px, 3.6vw, 44px)"
+          style={{ marginTop: 6, marginBottom: 20 }}
+        >
           Hold your window.
         </SH>
       </div>
-      <div
+      <div className="container-narrow" style={{ marginBottom: 20 }}>
+       <div
         style={{
-          margin: "0 22px 20px",
           padding: 18,
           border: "1px solid var(--line)",
           background: "var(--ink-2)",
@@ -126,11 +129,12 @@ export default function BookConfirmPage() {
             ${(booking.total || 0).toLocaleString()}
           </span>
         </div>
+       </div>
       </div>
 
-      <div
+      <div className="container-narrow" style={{ marginBottom: 20 }}>
+       <div
         style={{
-          margin: "0 22px 20px",
           padding: 16,
           border: "1px solid var(--accent)",
           background: "rgba(201,169,97,0.04)",
@@ -186,9 +190,10 @@ export default function BookConfirmPage() {
             </div>
           </div>
         </div>
+       </div>
       </div>
 
-      <div style={{ padding: "0 22px" }}>
+      <div className="container-narrow">
         <Ey style={{ marginBottom: 10 }}>Mobile — for confirmation & updates</Ey>
         <input
           value={phone}
@@ -226,7 +231,13 @@ export default function BookConfirmPage() {
         />
       </div>
 
-      <div style={{ padding: 22 }}>
+      <div
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(16px, 2vw, 24px)",
+          paddingBottom: "clamp(22px, 3vw, 40px)",
+        }}
+      >
         {error && (
           <div
             style={{

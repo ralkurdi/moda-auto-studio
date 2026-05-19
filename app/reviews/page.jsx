@@ -51,17 +51,23 @@ const REVIEWS = [
 export default function ReviewsPage() {
   return (
     <Screen title="Reviews">
-      <div style={{ padding: "20px 22px 8px" }}>
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: "clamp(20px, 3vw, 56px)",
+          paddingBottom: 8,
+        }}
+      >
         <Ey>4.9 · 148 reviews</Ey>
-        <SH size={34} style={{ marginTop: 8, marginBottom: 18 }}>
+        <SH
+          size="clamp(34px, 4vw, 56px)"
+          style={{ marginTop: 8, marginBottom: 18 }}
+        >
           From our owners.
         </SH>
         <div style={{ display: "flex", gap: 8, marginBottom: 4 }}>
-          {"★★★★★".split("").map((s, i) => (
-            <span
-              key={i}
-              style={{ color: "var(--accent)", fontSize: 20 }}
-            >
+          {"★★★★★".split("").map((_, i) => (
+            <span key={i} style={{ color: "var(--accent)", fontSize: 20 }}>
               ★
             </span>
           ))}
@@ -78,13 +84,19 @@ export default function ReviewsPage() {
             4.9 AVERAGE
           </div>
         </div>
-      </div>
-      <div style={{ padding: "0 22px 40px" }}>
+      </section>
+      <section
+        className="container-narrow"
+        style={{
+          paddingTop: 0,
+          paddingBottom: "clamp(36px, 5vw, 80px)",
+        }}
+      >
         {REVIEWS.map((r, i) => (
           <div
             key={i}
             style={{
-              padding: "20px 0",
+              padding: "clamp(20px, 2.5vw, 36px) 0",
               borderBottom: "1px solid var(--line)",
             }}
           >
@@ -106,18 +118,20 @@ export default function ReviewsPage() {
               style={{
                 fontFamily: "var(--serif)",
                 fontStyle: "italic",
-                fontSize: 18,
-                lineHeight: 1.4,
-                marginTop: 10,
+                fontSize: "clamp(18px, 2vw, 24px)",
+                lineHeight: 1.45,
+                marginTop: 12,
               }}
             >
               &ldquo;{r.body}&rdquo;
             </div>
             <div
               style={{
-                marginTop: 12,
+                marginTop: 16,
                 display: "flex",
                 justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: 8,
               }}
             >
               <Ey>{r.who}</Ey>
@@ -125,7 +139,7 @@ export default function ReviewsPage() {
             </div>
           </div>
         ))}
-      </div>
+      </section>
     </Screen>
   );
 }
