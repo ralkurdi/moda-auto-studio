@@ -1,37 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Ey, SH, GBtn, Progress } from "../../_lib/design";
 import { Screen } from "../../_components/screen-shell";
 import { useBooking } from "../../_lib/booking-context";
 
 const SLOTS = [
-  { t: "9:00 AM", kind: "Intake" },
-  { t: "11:00 AM", kind: "Intake" },
-  { t: "1:30 PM", kind: "Consultation" },
-  { t: "4:00 PM", kind: "Pickup slot" },
+  { t: "9:00 AM", kind: "Appointment" },
+  { t: "11:00 AM", kind: "Appointment" },
+  { t: "1:30 PM", kind: "Appointment" },
+  { t: "4:00 PM", kind: "Consultation" },
 ];
 
 const fmt = (d) =>
   d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
+// Compute the 28-day rolling window starting today.
+// Wrapped in useState/useEffect so server and client render the same initial
+// HTML (empty grid) and then the client populates dates after mount —
+// avoiding hydration mismatch on `new Date()`.
+// This whole block gets replaced by the Cal.com embed in Phase 2.5.
 export default function BookDatePage() {
   const router = useRouter();
   const { booking, setBooking } = useBooking();
   const [date, setDate] = useState(booking.date || null);
   const [slot, setSlot] = useState(booking.slot || null);
+  const [today, setToday] = useState(null);
 
-  const start = new Date("2026-04-27");
-  const days = [];
-  for (let i = 0; i < 28; i++) {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    const dow = d.getDay();
-    const closed = dow === 0;
-    const busy = [2, 3, 4, 9, 10, 15, 16, 17].includes(i);
-    days.push({ d, closed, busy });
-  }
+  useEffect(() => {
+    const t = new Date();
+    t.setHours(0, 0, 0, 0);
+    setToday(t);
+  }, []);
+
+  const days = useMemo(() => {
+    if (!today) return [];
+    const arr = [];
+    for (let i = 0; i < 28; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
+      const dow = d.getDay();
+      const closed = dow === 0;
+      arr.push({ d, closed });
+    }
+    return arr;
+  }, [today]);
+
+  const monthLabel = useMemo(() => {
+    if (!days.length) return "";
+    const first = days[0].d;
+    const last = days[days.length - 1].d;
+    const m0 = first.toLocaleDateString("en-US", { month: "long" });
+    const mn = last.toLocaleDateString("en-US", { month: "long" });
+    const yn = last.getFullYear();
+    return m0 === mn ? `${m0} ${yn}` : `${m0} — ${mn} ${yn}`;
+  }, [days]);
 
   return (
     <Screen title="Pick a Window" noTab>
@@ -53,7 +77,7 @@ export default function BookDatePage() {
           }}
         >
           <div style={{ fontFamily: "var(--serif)", fontSize: 22 }}>
-            April — May 2026
+            {monthLabel || " "}
           </div>
           <Ey>Bay 01 · Wrap</Ey>
         </div>
@@ -82,7 +106,7 @@ export default function BookDatePage() {
           {days.map((x, i) => {
             const isPicked =
               date && x.d.toDateString() === date.toDateString();
-            const disabled = x.closed || x.busy;
+            const disabled = x.closed;
             return (
               <button
                 key={i}
@@ -105,20 +129,6 @@ export default function BookDatePage() {
                 }}
               >
                 {x.d.getDate()}
-                {x.busy && !isPicked && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      bottom: 4,
-                      left: "50%",
-                      transform: "translateX(-50%)",
-                      width: 4,
-                      height: 4,
-                      borderRadius: 2,
-                      background: "var(--accent-deep)",
-                    }}
-                  />
-                )}
               </button>
             );
           })}
@@ -146,19 +156,6 @@ export default function BookDatePage() {
               }}
             />
             Available
-          </span>
-          <span>
-            <span
-              style={{
-                display: "inline-block",
-                width: 4,
-                height: 4,
-                background: "var(--accent-deep)",
-                marginRight: 6,
-                borderRadius: 2,
-              }}
-            />
-            Limited
           </span>
           <span>Sun closed</span>
         </div>

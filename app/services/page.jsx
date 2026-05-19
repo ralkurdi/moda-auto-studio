@@ -17,7 +17,7 @@ const CATS = [
     ],
   },
   {
-    href: "/services",
+    href: null,
     kicker: "PPF",
     title: "Paint Protection Film",
     from: "$1,895",
@@ -39,7 +39,7 @@ const CATS = [
     ],
   },
   {
-    href: "/services",
+    href: null,
     kicker: "Ceramic",
     title: "Ceramic coating",
     from: "$1,495",
@@ -50,7 +50,7 @@ const CATS = [
     ],
   },
   {
-    href: "/services",
+    href: null,
     kicker: "Correction",
     title: "Paint correction",
     from: "$1,195",
@@ -61,7 +61,7 @@ const CATS = [
     ],
   },
   {
-    href: "/services",
+    href: null,
     kicker: "Trim",
     title: "Chrome delete",
     from: "$395",
@@ -95,74 +95,81 @@ export default function ServicesPage() {
           Every finish, one roof.
         </SH>
         <div className="grid-2">
-          {CATS.map((c, i) => (
-            <button
-              key={i}
-              onClick={() => router.push(c.href)}
-              style={{
-                width: "100%",
-                textAlign: "left",
-                background: "var(--ink-2)",
-                border: "1px solid var(--line)",
-                padding: "clamp(18px, 2vw, 28px)",
-                color: "inherit",
-                display: "grid",
-                gridTemplateColumns: "1fr auto",
-                gap: 14,
-                cursor: "pointer",
-                transition: "border-color .15s",
-              }}
-            >
-              <div>
-                <Ey style={{ color: "var(--accent)" }}>{c.kicker}</Ey>
-                <div
-                  style={{
-                    fontFamily: "var(--serif)",
-                    fontSize: "clamp(22px, 2.2vw, 28px)",
-                    marginTop: 4,
-                    lineHeight: 1.15,
-                  }}
-                >
-                  {c.title}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "var(--mute)",
-                    marginTop: 10,
-                    lineHeight: 1.7,
-                  }}
-                >
-                  {c.bullets.map((b, j) => (
-                    <div key={j}>· {b}</div>
-                  ))}
-                </div>
-              </div>
-              <div
+          {CATS.map((c, i) => {
+            const clickable = Boolean(c.href);
+            const Tag = clickable ? "button" : "div";
+            return (
+              <Tag
+                key={i}
+                {...(clickable ? { onClick: () => router.push(c.href) } : {})}
                 style={{
-                  textAlign: "right",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  alignItems: "flex-end",
+                  width: "100%",
+                  textAlign: "left",
+                  background: "var(--ink-2)",
+                  border: "1px solid var(--line)",
+                  padding: "clamp(18px, 2vw, 28px)",
+                  color: "inherit",
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto",
+                  gap: 14,
+                  cursor: clickable ? "pointer" : "default",
+                  transition: "border-color .15s",
                 }}
               >
-                <Ey>From</Ey>
+                <div>
+                  <Ey style={{ color: "var(--accent)" }}>{c.kicker}</Ey>
+                  <div
+                    style={{
+                      fontFamily: "var(--serif)",
+                      fontSize: "clamp(22px, 2.2vw, 28px)",
+                      marginTop: 4,
+                      lineHeight: 1.15,
+                    }}
+                  >
+                    {c.title}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: 12,
+                      color: "var(--mute)",
+                      marginTop: 10,
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {c.bullets.map((b, j) => (
+                      <div key={j}>· {b}</div>
+                    ))}
+                  </div>
+                </div>
                 <div
                   style={{
-                    fontFamily: "var(--serif)",
-                    fontSize: "clamp(20px, 2vw, 26px)",
-                    color: "var(--bone)",
+                    textAlign: "right",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: clickable ? "space-between" : "flex-start",
+                    alignItems: "flex-end",
+                    gap: clickable ? 0 : 4,
                   }}
                 >
-                  {c.from}
+                  <Ey>From</Ey>
+                  <div
+                    style={{
+                      fontFamily: "var(--serif)",
+                      fontSize: "clamp(20px, 2vw, 26px)",
+                      color: "var(--bone)",
+                    }}
+                  >
+                    {c.from}
+                  </div>
+                  {clickable && (
+                    <span style={{ color: "var(--accent)" }}>
+                      <ChevronR />
+                    </span>
+                  )}
                 </div>
-                <span style={{ color: "var(--accent)" }}>
-                  <ChevronR />
-                </span>
-              </div>
-            </button>
-          ))}
+              </Tag>
+            );
+          })}
         </div>
         <button
           onClick={() => router.push("/pricing")}

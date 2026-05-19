@@ -12,28 +12,28 @@ const SERVICE_ROWS = [
     to: "/services/vinyl-wraps",
   },
   {
-    kicker: "PPF",
-    title: "Paint Protection Film",
-    body: "Track, partial front, full body.",
-    to: "/services",
-  },
-  {
     kicker: "Tint",
     title: "Ceramic window tinting",
     body: "Lifetime warranty. Legal to limo.",
     to: "/services/window-tint",
   },
   {
+    kicker: "PPF",
+    title: "Paint Protection Film",
+    body: "Track, partial front, full body.",
+    to: null,
+  },
+  {
     kicker: "Ceramic",
     title: "Ceramic coating",
     body: "9H protection. 5 & 9-year programs.",
-    to: "/services",
+    to: null,
   },
   {
     kicker: "Trim",
     title: "Chrome delete & blackout",
     body: "Badges, surrounds, emblems.",
-    to: "/services",
+    to: null,
   },
 ];
 
@@ -148,50 +148,59 @@ export default function HomePage() {
           <Ey>01 · Services</Ey>
           <Ey style={{ color: "var(--bone-2)" }}>Five disciplines</Ey>
         </div>
-        {SERVICE_ROWS.map((s, i, arr) => (
-          <div key={s.title}>
-            <button
-              onClick={() => router.push(s.to)}
-              style={{
-                width: "100%",
-                background: "transparent",
-                color: "inherit",
-                textAlign: "left",
-                padding: "clamp(18px, 2.4vw, 28px) 0",
-                display: "grid",
-                gridTemplateColumns: "clamp(44px, 6vw, 64px) 1fr auto",
-                alignItems: "center",
-                gap: 14,
-              }}
-            >
-              <Ey>{String(i + 1).padStart(2, "0")}</Ey>
-              <div>
-                <div
-                  style={{
-                    fontFamily: "var(--serif)",
-                    fontSize: "clamp(22px, 2.4vw, 32px)",
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {s.title}
+        {SERVICE_ROWS.map((s, i, arr) => {
+          const clickable = Boolean(s.to);
+          const Tag = clickable ? "button" : "div";
+          return (
+            <div key={s.title}>
+              <Tag
+                {...(clickable
+                  ? { onClick: () => router.push(s.to) }
+                  : {})}
+                style={{
+                  width: "100%",
+                  background: "transparent",
+                  color: "inherit",
+                  textAlign: "left",
+                  padding: "clamp(18px, 2.4vw, 28px) 0",
+                  display: "grid",
+                  gridTemplateColumns: "clamp(44px, 6vw, 64px) 1fr auto",
+                  alignItems: "center",
+                  gap: 14,
+                  cursor: clickable ? "pointer" : "default",
+                }}
+              >
+                <Ey>{String(i + 1).padStart(2, "0")}</Ey>
+                <div>
+                  <div
+                    style={{
+                      fontFamily: "var(--serif)",
+                      fontSize: "clamp(22px, 2.4vw, 32px)",
+                      lineHeight: 1.1,
+                    }}
+                  >
+                    {s.title}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "clamp(12px, 1vw, 14px)",
+                      color: "var(--mute)",
+                      marginTop: 5,
+                    }}
+                  >
+                    {s.body}
+                  </div>
                 </div>
-                <div
-                  style={{
-                    fontSize: "clamp(12px, 1vw, 14px)",
-                    color: "var(--mute)",
-                    marginTop: 5,
-                  }}
-                >
-                  {s.body}
-                </div>
-              </div>
-              <span style={{ color: "var(--accent)" }}>
-                <ChevronR />
-              </span>
-            </button>
-            {i < arr.length - 1 && <Rule />}
-          </div>
-        ))}
+                {clickable && (
+                  <span style={{ color: "var(--accent)" }}>
+                    <ChevronR />
+                  </span>
+                )}
+              </Tag>
+              {i < arr.length - 1 && <Rule />}
+            </div>
+          );
+        })}
       </section>
 
       {/* ── BUNDLES TEASER ───────────────────────────────────────────── */}
@@ -205,17 +214,14 @@ export default function HomePage() {
         <Ey>02 · Protection packages</Ey>
         <div className="grid-3" style={{ marginTop: "clamp(14px, 2vw, 24px)" }}>
           {BUNDLES_TEASER.map(([n, d]) => (
-            <button
+            <div
               key={n}
-              onClick={() => router.push("/pricing")}
               style={{
                 background: "var(--ink-2)",
                 border: "1px solid var(--line)",
                 padding: "clamp(14px, 2vw, 22px)",
                 textAlign: "left",
                 color: "inherit",
-                cursor: "pointer",
-                transition: "border-color .15s",
               }}
             >
               <Ey
@@ -235,7 +241,7 @@ export default function HomePage() {
               >
                 {d}
               </div>
-            </button>
+            </div>
           ))}
         </div>
         <button

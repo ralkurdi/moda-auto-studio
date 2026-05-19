@@ -15,11 +15,18 @@ const fmt = (d) =>
       })
     : "";
 
-const NEXT = [
+const NEXT_APPOINTMENT = [
   ["72h before", "We confirm by text. Reply to reschedule."],
-  ["Day of", "Intake at your slot sharp. Coffee on us."],
+  ["Day of", "Drop the car at your slot sharp. Coffee on us."],
   ["During", "Daily progress photos from the bay."],
   ["Handoff", "Walkthrough + care kit + warranty QR."],
+];
+
+const NEXT_CONSULTATION = [
+  ["72h before", "We confirm by text. Reply to reschedule."],
+  ["Day of", "Bring the car in. We walk through scope together."],
+  ["At the studio", "Paint inspection + service options + timing."],
+  ["Within 24h", "Tailored quote sent to your phone or email."],
 ];
 
 export default function BookConfirmedPage() {
@@ -27,6 +34,9 @@ export default function BookConfirmedPage() {
   const { booking, resetBooking } = useBooking();
   const [showSms, setShowSms] = useState(false);
   const reservationRef = booking.reservation_ref || "—";
+  const isConsultation = booking.slot?.kind === "Consultation";
+  const refLabel = isConsultation ? "Consultation booked" : "Bay reserved";
+  const timeline = isConsultation ? NEXT_CONSULTATION : NEXT_APPOINTMENT;
 
   useEffect(() => {
     const t = setTimeout(() => setShowSms(true), 1100);
@@ -61,7 +71,7 @@ export default function BookConfirmedPage() {
           ✓
         </div>
         <Ey style={{ color: "var(--accent)", marginTop: 18 }}>
-          Bay reserved · #{reservationRef}
+          {refLabel} · #{reservationRef}
         </Ey>
         <SH size={36} style={{ marginTop: 12 }}>
           See you{" "}
@@ -82,11 +92,21 @@ export default function BookConfirmedPage() {
             marginInline: "auto",
           }}
         >
-          We&rsquo;ve blocked {booking.slot?.t || "your slot"} on{" "}
-          {fmt(booking.date) || "your date"}.{" "}
-          {(booking.total || 0) >= 1000
-            ? "We'll text you a deposit link to lock the bay."
-            : "A confirmation text is on its way."}
+          {isConsultation ? (
+            <>
+              We&rsquo;ve set aside {booking.slot?.t || "your slot"} on{" "}
+              {fmt(booking.date) || "your date"} for your consultation. A
+              confirmation text is on its way.
+            </>
+          ) : (
+            <>
+              We&rsquo;ve blocked {booking.slot?.t || "your slot"} on{" "}
+              {fmt(booking.date) || "your date"}.{" "}
+              {(booking.total || 0) >= 1000
+                ? "We'll text you a deposit link to lock the bay."
+                : "A confirmation text is on its way."}
+            </>
+          )}
         </div>
       </div>
       <div className="container-narrow">
@@ -144,8 +164,17 @@ export default function BookConfirmedPage() {
                   animation: "fadeUp .4s",
                 }}
               >
-                You&rsquo;re in. {booking.slot?.t} on {fmt(booking.date)}, Bay
-                01.
+                {isConsultation ? (
+                  <>
+                    Confirmed. Consultation at {booking.slot?.t} on{" "}
+                    {fmt(booking.date)}.
+                  </>
+                ) : (
+                  <>
+                    You&rsquo;re in. {booking.slot?.t} on {fmt(booking.date)},
+                    Bay 01.
+                  </>
+                )}
                 <br />
                 <br />
                 Address:{" "}
@@ -183,14 +212,16 @@ export default function BookConfirmedPage() {
         }}
       >
         <Ey>What happens next</Ey>
-        {NEXT.map(([w, t], i) => (
+        {timeline.map(([w, t], i) => (
           <div
             key={w}
             style={{
               display: "grid",
-              gridTemplateColumns: "80px 1fr",
+              gridTemplateColumns: "100px 1fr",
               padding: "12px 0",
-              borderBottom: i < NEXT.length - 1 ? "1px solid var(--line)" : "none",
+              borderBottom:
+                i < timeline.length - 1 ? "1px solid var(--line)" : "none",
+              gap: 12,
             }}
           >
             <Ey style={{ color: "var(--accent)" }}>{w}</Ey>

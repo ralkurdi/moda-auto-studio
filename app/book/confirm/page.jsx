@@ -19,18 +19,22 @@ export default function BookConfirmPage() {
   const router = useRouter();
   const { booking, setBooking } = useBooking();
   const [phone, setPhone] = useState(booking.phone || "(415) ");
+  const [email, setEmail] = useState(booking.email || "");
   const [notes, setNotes] = useState(booking.confirmNotes || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const requiresDeposit = (booking.total || 0) >= 1000;
-  const valid = phone.replace(/\D/g, "").length >= 10;
+  const isConsultation = booking.slot?.kind === "Consultation";
+  const requiresDeposit = !isConsultation && (booking.total || 0) >= 1000;
+  const phoneValid = phone.replace(/\D/g, "").length >= 10;
+  const emailValid = !email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const valid = phoneValid && emailValid;
 
   const handleSubmit = async () => {
     if (!valid) return;
     setLoading(true);
     setError(null);
-    setBooking({ phone, confirmNotes: notes });
+    setBooking({ phone, email, confirmNotes: notes });
 
     try {
       const res = await fetch("/api/bookings/create", {
@@ -38,6 +42,7 @@ export default function BookConfirmPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           client_phone: phone,
+          client_email: email || null,
           vehicle: {
             year: booking.year,
             make: booking.make,
@@ -124,7 +129,9 @@ export default function BookConfirmPage() {
             marginTop: 6,
           }}
         >
-          <span style={{ color: "var(--bone-2)" }}>Estimate</span>
+          <span style={{ color: "var(--bone-2)" }}>
+            {isConsultation ? "Tentative quote" : "Estimate"}
+          </span>
           <span style={{ fontFamily: "var(--serif)" }}>
             ${(booking.total || 0).toLocaleString()}
           </span>
@@ -162,7 +169,9 @@ export default function BookConfirmPage() {
             i
           </div>
           <div>
-            <Ey style={{ color: "var(--accent)" }}>Deposit policy</Ey>
+            <Ey style={{ color: "var(--accent)" }}>
+              {isConsultation ? "Consultation policy" : "Deposit policy"}
+            </Ey>
             <div
               style={{
                 fontSize: 13,
@@ -171,7 +180,15 @@ export default function BookConfirmPage() {
                 lineHeight: 1.5,
               }}
             >
-              {requiresDeposit ? (
+              {isConsultation ? (
+                <>
+                  Consultations are{" "}
+                  <span style={{ color: "var(--bone)" }}>complimentary</span>{" "}
+                  and run about 45 minutes. Bring the car as it is —
+                  we&rsquo;ll walk through paint condition, service options,
+                  and timing. No deposit, no obligation.
+                </>
+              ) : requiresDeposit ? (
                 <>
                   For jobs over $1,000, a{" "}
                   <span style={{ color: "var(--bone)" }}>
@@ -198,11 +215,35 @@ export default function BookConfirmPage() {
         <input
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
+          inputMode="tel"
+          autoComplete="tel"
           style={{
             width: "100%",
             padding: 14,
             background: "var(--ink-2)",
             border: "1px solid var(--line)",
+            color: "var(--bone)",
+            fontFamily: "var(--mono)",
+            fontSize: 15,
+          }}
+        />
+
+        <Ey style={{ marginTop: 20, marginBottom: 10 }}>
+          Email — optional
+        </Ey>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@email.com"
+          inputMode="email"
+          autoComplete="email"
+          style={{
+            width: "100%",
+            padding: 14,
+            background: "var(--ink-2)",
+            border:
+              "1px solid " + (email && !emailValid ? "var(--accent-deep)" : "var(--line)"),
             color: "var(--bone)",
             fontFamily: "var(--mono)",
             fontSize: 15,
