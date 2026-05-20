@@ -194,14 +194,14 @@ export default function BookConfirmPage() {
                   <span style={{ color: "var(--bone)" }}>
                     $300 refundable deposit
                   </span>{" "}
-                  is required to reserve your bay. We&rsquo;ll text you a
-                  secure payment link once we confirm your slot — fully
+                  is required to reserve your bay. We&rsquo;ll email you a
+                  secure payment link with your confirmation — fully
                   refundable up to 72 hours before your appointment.
                 </>
               ) : (
                 <>
-                  This service doesn&rsquo;t require a deposit. We&rsquo;ll
-                  confirm your reservation by text within the hour.
+                  This service doesn&rsquo;t require a deposit. A
+                  confirmation email is on its way.
                 </>
               )}
             </div>

@@ -96,15 +96,15 @@ export default function BookConfirmedPage() {
             <>
               We&rsquo;ve set aside {booking.slot?.t || "your slot"} on{" "}
               {fmt(booking.date) || "your date"} for your consultation. A
-              confirmation text is on its way.
+              confirmation email is on its way.
             </>
           ) : (
             <>
               We&rsquo;ve blocked {booking.slot?.t || "your slot"} on{" "}
               {fmt(booking.date) || "your date"}.{" "}
               {(booking.total || 0) >= 1000
-                ? "We'll text you a deposit link to lock the bay."
-                : "A confirmation text is on its way."}
+                ? "Check your email for the $300 deposit link to lock the bay."
+                : "A confirmation email is on its way."}
             </>
           )}
         </div>
@@ -179,7 +179,7 @@ export default function BookConfirmedPage() {
                 <br />
                 Address:{" "}
                 <span style={{ color: "var(--accent)" }}>
-                  412 Forbes Blvd, South SF 94080
+                  52 S Linden Ave #2, South SF 94080
                 </span>
                 <br />
                 Reply <b>R</b> to reschedule, <b>D</b> for directions,{" "}

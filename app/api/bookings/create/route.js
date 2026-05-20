@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 import { supabaseServer } from "../../../_lib/supabase/server";
 import { sendSMS, fmtDate } from "../../../_lib/twilio";
 import { sendClientConfirmation, sendOwnerNotification } from "../../../_lib/mail";
+import { createDepositSession } from "../../../_lib/stripe";
 
 export const dynamic = "force-dynamic";
 
 const generateRef = () => `MA-${Math.floor(1000 + Math.random() * 8999)}`;
 
-const STUDIO_ADDR = "412 Forbes Blvd, South SF 94080";
+const STUDIO_ADDR = "52 S Linden Ave #2, South SF 94080";
 
 function buildClientSMS({ slot, date }) {
   const isConsultation = slot?.kind === "Consultation";
@@ -118,11 +119,47 @@ export async function POST(req) {
     );
   }
 
+  // Generate Stripe Checkout Session for deposits BEFORE firing emails so
+  // the URL can be threaded into the client confirmation.
+  let depositUrl = null;
+  if (deposit_required) {
+    const vehicle_label = [vehicle.year, vehicle.make, vehicle.model]
+      .filter(Boolean)
+      .join(" ");
+    const deposit = await createDepositSession({
+      reservation_ref: inserted.reservation_ref,
+      booking_id: inserted.id,
+      client_email,
+      vehicle_label,
+    });
+    if (deposit.ok) {
+      depositUrl = deposit.url;
+      // Persist the URL + session id on the booking row for later reference
+      // (admin dashboard, refund triggers, etc.).
+      const { error: updateErr } = await supabase
+        .from("bookings")
+        .update({
+          deposit_stripe_url: deposit.url,
+          deposit_stripe_id: deposit.id,
+        })
+        .eq("id", inserted.id);
+      if (updateErr) {
+        console.error(
+          "[bookings.create] saving deposit_stripe_url failed:",
+          updateErr.message
+        );
+      }
+    } else {
+      console.error(
+        "[bookings.create] Stripe deposit session failed:",
+        deposit.error
+      );
+    }
+  }
+
   // Fire SMS and email notifications — to the client + to the owner.
   // Awaited via allSettled so a single transport failure doesn't take down
-  // the booking response, and serverless functions don't tear down before
-  // delivery starts. Twilio helper no-ops when creds missing (paused on A2P).
-  // TODO Phase 2.2 — Stripe deposit link.
+  // the booking response. Twilio helper no-ops when creds missing.
   const notifyBooking = {
     reservation_ref: inserted.reservation_ref,
     slot,
@@ -135,6 +172,7 @@ export async function POST(req) {
     client_email,
     total,
     deposit_required,
+    deposit_url: depositUrl,
   };
 
   const notifyResults = await Promise.allSettled([

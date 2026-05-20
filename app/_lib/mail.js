@@ -68,7 +68,7 @@ const fmtWeekday = (d) => {
 
 const STUDIO = {
   name: "MODA Auto Studio",
-  address: "412 Forbes Blvd, South San Francisco, CA 94080",
+  address: "52 S Linden Ave #2, South San Francisco, CA 94080",
   hours: "Mon–Sat · 9–6 · by appointment",
   email: "book@modaautostudio.com",
 };
@@ -167,6 +167,26 @@ function buildClientHTML(booking) {
       </table>
     </td></tr>
 
+    ${
+      booking.deposit_url
+        ? `
+    <tr><td style="padding:28px 40px 8px;text-align:center;">
+      <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#C9A961;margin-bottom:12px;">
+        Reserve your bay
+      </div>
+      <div style="font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:1.3;color:#0B0B0C;margin-bottom:18px;">
+        A $300 refundable deposit secures your slot.
+      </div>
+      <a href="${booking.deposit_url}" style="display:inline-block;background:#C9A961;color:#0B0B0C;padding:16px 36px;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;border:1px solid #C9A961;">
+        Pay $300 deposit
+      </a>
+      <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#8a857a;">
+        Fully refundable up to 72 hours before your appointment.
+      </div>
+    </td></tr>`
+        : ""
+    }
+
     <tr><td style="padding:24px 40px 8px;">
       <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#8a857a;margin-bottom:8px;">
         What happens next
@@ -230,7 +250,11 @@ ${
   booking.total
     ? `${isConsultation ? "Tentative quote" : "Estimate"}: $${booking.total.toLocaleString()}\n`
     : ""
-}
+}${
+    booking.deposit_url
+      ? `\nReserve your bay — pay the $300 refundable deposit:\n${booking.deposit_url}\n(Fully refundable up to 72 hours before your appointment.)\n`
+      : ""
+  }
 ${STUDIO.address}
 ${STUDIO.hours}
 
@@ -261,8 +285,16 @@ function buildOwnerHTML(booking) {
         ${row("Tier", booking.tier || "—")}
         ${row("Services", services)}
         ${row("Estimate", booking.total ? `$${booking.total.toLocaleString()}` : "—")}
-        ${row("Deposit", booking.deposit_required ? "Required ($300)" : "Not required")}
+        ${row("Deposit", booking.deposit_required ? (booking.deposit_url ? "$300 link sent" : "Required ($300) — link failed") : "Not required")}
       </table>
+      ${
+        booking.deposit_url
+          ? `
+      <div style="margin-top:14px;font-size:12px;color:#3a3a3f;">
+        Stripe Checkout: <a href="${booking.deposit_url}" style="color:#8C6B2F;">${booking.deposit_url}</a>
+      </div>`
+          : ""
+      }
       ${
         booking.notes
           ? `
@@ -294,6 +326,48 @@ export async function sendClientConfirmation(booking) {
     subject,
     html: buildClientHTML(booking),
     text: buildClientText(booking),
+  });
+}
+
+function buildConsultationHTML(c) {
+  const body = `
+    <tr><td style="padding:32px 40px;">
+      <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#C9A961;">
+        New consultation request
+      </div>
+      <h1 style="font-family:Georgia,'Times New Roman',serif;font-weight:500;font-size:24px;line-height:1.2;margin:10px 0 20px;color:#0B0B0C;">
+        ${c.client_name}
+      </h1>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid rgba(0,0,0,0.08);background:#F5F1E8;">
+        ${row("Phone", c.client_phone || "—")}
+        ${row("Email", c.client_email || "—")}
+        ${row("Vehicle", c.vehicle || "—")}
+        ${row("Interested in", c.service_interest || "—")}
+        ${row("Heard about us", c.referral_source || "—")}
+      </table>
+      <div style="margin-top:20px;padding:14px;background:#F5F1E8;border:1px solid rgba(0,0,0,0.08);">
+        <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#8a857a;margin-bottom:8px;">Message</div>
+        <div style="font-size:13.5px;line-height:1.55;color:#0B0B0C;white-space:pre-wrap;">${c.notes}</div>
+      </div>
+    </td></tr>
+  `;
+  return shell({
+    preheader: `${c.client_name} · ${c.vehicle || "no vehicle listed"}`,
+    bodyHtml: body,
+  });
+}
+
+export async function sendConsultationNotification(consultation) {
+  const ownerEmail = process.env.OWNER_EMAIL;
+  if (!ownerEmail) return { ok: false, error: "Missing OWNER_EMAIL" };
+  const subject = `New consultation request · ${consultation.client_name}${
+    consultation.vehicle ? ` · ${consultation.vehicle}` : ""
+  }`;
+  return sendEmail({
+    to: ownerEmail,
+    subject,
+    html: buildConsultationHTML(consultation),
+    replyTo: consultation.client_email || undefined,
   });
 }
 
