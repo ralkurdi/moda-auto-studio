@@ -227,6 +227,18 @@ export default function BookConfirmPage() {
             fontSize: 15,
           }}
         />
+        <div
+          style={{
+            marginTop: 8,
+            fontSize: 11,
+            lineHeight: 1.5,
+            color: "var(--mute)",
+          }}
+        >
+          By submitting, you agree to receive SMS confirmations and reminders
+          from MODA Auto Studio. Reply STOP to opt out at any time. Standard
+          message and data rates may apply.
+        </div>
 
         <Ey style={{ marginTop: 20, marginBottom: 10 }}>
           Email — optional

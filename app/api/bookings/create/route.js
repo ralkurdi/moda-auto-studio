@@ -1,9 +1,29 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "../../../_lib/supabase/server";
+import { sendSMS, fmtDate } from "../../../_lib/twilio";
+import { sendClientConfirmation, sendOwnerNotification } from "../../../_lib/mail";
 
 export const dynamic = "force-dynamic";
 
 const generateRef = () => `MA-${Math.floor(1000 + Math.random() * 8999)}`;
+
+const STUDIO_ADDR = "412 Forbes Blvd, South SF 94080";
+
+function buildClientSMS({ slot, date }) {
+  const isConsultation = slot?.kind === "Consultation";
+  const when = `${slot?.t || "your slot"} on ${fmtDate(date) || "your date"}`;
+  if (isConsultation) {
+    return `MODA Studio: Consultation confirmed at ${when}. ${STUDIO_ADDR}. Reply R to reschedule, D for directions.`;
+  }
+  return `MODA Studio: You're in. ${when}. ${STUDIO_ADDR}. Reply R to reschedule, D for directions.`;
+}
+
+function buildOwnerSMS({ reservation_ref, slot, date, vehicle, client_phone, total }) {
+  const kind = slot?.kind || "Booking";
+  const car = [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(" ") || "—";
+  const totalLabel = total ? ` · est $${total.toLocaleString()}` : "";
+  return `New ${kind} #${reservation_ref} · ${car} · ${client_phone} · ${slot?.t || ""} ${fmtDate(date) || ""}${totalLabel}`;
+}
 
 export async function POST(req) {
   let body;
@@ -98,8 +118,56 @@ export async function POST(req) {
     );
   }
 
-  // TODO Phase 2.2/2.3/2.4: trigger Stripe deposit link, Gmail confirmation,
-  // and Twilio SMS to client + owner. For now, the row is just stored.
+  // Fire SMS and email notifications — to the client + to the owner.
+  // Awaited via allSettled so a single transport failure doesn't take down
+  // the booking response, and serverless functions don't tear down before
+  // delivery starts. Twilio helper no-ops when creds missing (paused on A2P).
+  // TODO Phase 2.2 — Stripe deposit link.
+  const notifyBooking = {
+    reservation_ref: inserted.reservation_ref,
+    slot,
+    date,
+    vehicle,
+    tier,
+    services,
+    notes: combinedNotes,
+    client_phone,
+    client_email,
+    total,
+    deposit_required,
+  };
+
+  const notifyResults = await Promise.allSettled([
+    sendSMS({
+      to: client_phone,
+      body: buildClientSMS({ slot, date }),
+    }),
+    sendSMS({
+      to: process.env.OWNER_PHONE,
+      body: buildOwnerSMS({
+        reservation_ref: inserted.reservation_ref,
+        slot,
+        date,
+        vehicle,
+        client_phone,
+        total,
+      }),
+    }),
+    sendClientConfirmation(notifyBooking),
+    sendOwnerNotification(notifyBooking),
+  ]);
+
+  // Log delivery failures server-side but don't surface to the client —
+  // the booking itself succeeded and the row is stored.
+  const labels = ["SMS→client", "SMS→owner", "email→client", "email→owner"];
+  notifyResults.forEach((r, i) => {
+    const who = labels[i];
+    if (r.status === "rejected") {
+      console.error(`[bookings.create] ${who} threw:`, r.reason);
+    } else if (!r.value.ok) {
+      console.error(`[bookings.create] ${who} failed:`, r.value.error);
+    }
+  });
 
   return NextResponse.json({
     ok: true,
