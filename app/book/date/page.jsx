@@ -20,7 +20,12 @@ const fmt = (d) =>
 // Wrapped in useState/useEffect so server and client render the same initial
 // HTML (empty grid) and then the client populates dates after mount —
 // avoiding hydration mismatch on `new Date()`.
-// This whole block gets replaced by the Cal.com embed in Phase 2.5.
+//
+// SHELVED: Cal.com embed implementation lives at ./_archived/cal-embed.jsx.
+// Blocked on Cal.com's "Redirect on Success" being Pro-only — without it
+// the bookingSuccessful callback can't intercept the flow and route the
+// user back to our /book/confirm. Re-enable by replacing the contents of
+// this file with that one and bumping the Cal plan.
 export default function BookDatePage() {
   const router = useRouter();
   const { booking, setBooking } = useBooking();
