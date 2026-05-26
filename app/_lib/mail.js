@@ -75,6 +75,18 @@ const STUDIO = {
 
 // Inline-styled HTML email template. Tables for layout, web-safe fonts as
 // fallbacks for Cormorant Garamond. 600px max width.
+//
+// TODO(future): email layout polish pass — check typography hierarchy on
+// Gmail mobile + Apple Mail + Outlook web, add a small Stripe security badge
+// or lock icon next to the deposit CTA so clients recognize "this is a
+// secure payment link" at a glance, tighten the spacing in the
+// what-happens-next timeline, and consider a brand-tinted hero image at the
+// top of each email once we have real photos.
+//
+// TODO(future): owner email currently shows the deposit URL as a plain text
+// link in buildOwnerHTML (search for "Stripe Checkout:"). Promote that to
+// the same gold button treatment the client email uses so the owner can
+// one-tap the link from their phone inbox.
 function shell({ preheader, bodyHtml }) {
   return `<!doctype html>
 <html lang="en">

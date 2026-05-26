@@ -40,6 +40,13 @@ export async function createDepositSession({
           quantity: 1,
           price_data: {
             currency: "usd",
+            // TODO(future): per-service deposit amounts. Today every booking
+            // ≥ $1,000 holds the same flat $300. Source the amount from the
+            // service catalog (e.g., full-body PPF = $500, ceramic = $200,
+            // tint-only = $0) so high-ticket holds match risk and low-margin
+            // services can opt out. Likely lives on each entry in
+            // app/_lib/services-catalog.js as a `deposit` field, with the
+            // booking-create route picking max() across selected services.
             unit_amount: 30000, // $300.00 in cents
             product_data: {
               name: "MODA Auto Studio · Reservation Deposit",

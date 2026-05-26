@@ -1,9 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Ey, SH, Ph } from "../_lib/design";
 import { Screen } from "../_components/screen-shell";
 import { BeforeAfter } from "../_components/before-after";
+
+const IG_HANDLE = "modaautostudio";
 
 const ITEMS = [
   {
@@ -46,6 +49,25 @@ const ITEMS = [
 
 export default function WorkPage() {
   const router = useRouter();
+  const [igPosts, setIgPosts] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/instagram/feed")
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled && Array.isArray(data?.posts)) {
+          setIgPosts(data.posts);
+        }
+      })
+      .catch(() => {
+        // Silent — section just won't render if the API call fails.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <Screen title="Portfolio">
       <section
@@ -120,6 +142,107 @@ export default function WorkPage() {
           ))}
         </div>
       </section>
+
+      {/* Instagram feed — SHELVED until the @modaautostudio account exits
+          Meta's review and we can generate a long-lived Graph API token.
+          The section is conditionally rendered, so until INSTAGRAM_ACCESS_TOKEN
+          + INSTAGRAM_USER_ID are populated in .env.local, nothing appears.
+          Re-enable by completing the Meta Developer walkthrough and adding
+          the env vars — no further code changes needed. */}
+      {igPosts.length > 0 && (
+        <section
+          className="container"
+          style={{
+            paddingTop: "clamp(36px, 5vw, 80px)",
+            paddingBottom: "clamp(36px, 5vw, 80px)",
+            borderTop: "1px solid var(--line)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              marginBottom: "clamp(14px, 2vw, 28px)",
+              flexWrap: "wrap",
+              gap: 8,
+            }}
+          >
+            <div>
+              <Ey>From the bay</Ey>
+              <div
+                style={{
+                  fontFamily: "var(--serif)",
+                  fontSize: "clamp(24px, 3vw, 36px)",
+                  color: "var(--bone)",
+                  marginTop: 8,
+                  lineHeight: 1.1,
+                }}
+              >
+                @{IG_HANDLE}
+              </div>
+            </div>
+            <a
+              href={`https://instagram.com/${IG_HANDLE}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "var(--accent)",
+                fontFamily: "var(--mono)",
+                fontSize: 11,
+                letterSpacing: ".18em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+              }}
+            >
+              Follow →
+            </a>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+              gap: "clamp(6px, 1vw, 12px)",
+            }}
+          >
+            {igPosts.map((p) => {
+              const src =
+                p.media_type === "VIDEO" ? p.thumbnail_url || p.media_url : p.media_url;
+              return (
+                <a
+                  key={p.id}
+                  href={p.permalink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    aspectRatio: "1",
+                    background: "var(--ink-2)",
+                    border: "1px solid var(--line)",
+                    display: "block",
+                    overflow: "hidden",
+                    position: "relative",
+                  }}
+                  aria-label={p.caption?.slice(0, 80) || "Instagram post"}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                    }}
+                  />
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
     </Screen>
   );
 }
