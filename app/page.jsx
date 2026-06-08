@@ -33,7 +33,7 @@ const SERVICE_ROWS = [
     kicker: "Trim",
     title: "Chrome delete & blackout",
     body: "Badges, surrounds, emblems.",
-    to: null,
+    to: "/services/chrome-delete",
   },
 ];
 

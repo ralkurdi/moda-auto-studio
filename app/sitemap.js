@@ -14,6 +14,7 @@ const ROUTES = [
   { path: "/services/window-tint", priority: 0.8, freq: "monthly" },
   { path: "/services/ceramic-coating", priority: 0.8, freq: "monthly" },
   { path: "/services/paint-correction", priority: 0.8, freq: "monthly" },
+  { path: "/services/chrome-delete", priority: 0.8, freq: "monthly" },
   { path: "/visualizer", priority: 0.6, freq: "monthly" },
   { path: "/work", priority: 0.8, freq: "weekly" },
   { path: "/book", priority: 0.9, freq: "weekly" },

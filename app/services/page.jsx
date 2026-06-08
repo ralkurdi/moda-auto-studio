@@ -61,7 +61,7 @@ const CATS = [
     ],
   },
   {
-    href: null,
+    href: "/services/chrome-delete",
     kicker: "Trim",
     title: "Chrome delete",
     from: "$395",
