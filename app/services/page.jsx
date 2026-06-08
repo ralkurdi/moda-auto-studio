@@ -17,7 +17,7 @@ const CATS = [
     ],
   },
   {
-    href: null,
+    href: "/services/paint-protection-film",
     kicker: "PPF",
     title: "Paint Protection Film",
     from: "$1,895",
@@ -39,7 +39,7 @@ const CATS = [
     ],
   },
   {
-    href: null,
+    href: "/services/ceramic-coating",
     kicker: "Ceramic",
     title: "Ceramic coating",
     from: "$1,495",
@@ -50,7 +50,7 @@ const CATS = [
     ],
   },
   {
-    href: null,
+    href: "/services/paint-correction",
     kicker: "Correction",
     title: "Paint correction",
     from: "$1,195",

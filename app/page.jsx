@@ -21,13 +21,13 @@ const SERVICE_ROWS = [
     kicker: "PPF",
     title: "Paint Protection Film",
     body: "Track, partial front, full body.",
-    to: null,
+    to: "/services/paint-protection-film",
   },
   {
     kicker: "Ceramic",
     title: "Ceramic coating",
     body: "9H protection. 5 & 9-year programs.",
-    to: null,
+    to: "/services/ceramic-coating",
   },
   {
     kicker: "Trim",
