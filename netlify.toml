@@ -1,0 +1,21 @@
+# Netlify build configuration for MODA Auto Studio.
+#
+# Without this file, Netlify detects Next.js but skips the Next.js Runtime
+# plugin (@netlify/plugin-nextjs) — which is what transforms .next/server
+# routes into Netlify Functions for API routes and dynamic pages. The
+# observable symptom: deploy succeeds but "0 new function(s) to upload"
+# and every page 404s.
+#
+# Explicitly attaching the plugin here forces Netlify to install + run it.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Node version pinned to match local dev (Homebrew node@20 → Netlify mise
+# resolves to a 20.x LTS line). Adjust if we ever bump local Node.
+[build.environment]
+  NODE_VERSION = "20"
