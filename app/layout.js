@@ -24,7 +24,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudio.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudiosf.com";
 
 // LocalBusiness / AutomotiveBusiness JSON-LD — emitted once per page in <head>.
 // Coordinates are approximate for 52 S Linden Ave, South San Francisco

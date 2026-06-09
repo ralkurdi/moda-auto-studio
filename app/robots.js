@@ -1,5 +1,5 @@
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudio.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudiosf.com";
 
 export default function robots() {
   return {

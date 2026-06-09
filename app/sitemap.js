@@ -1,5 +1,5 @@
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudio.com";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudiosf.com";
 
 // Indexable routes. Booking flow steps (/book/vehicle, /book/service,
 // /book/date, /book/confirm, /book/confirmed) are intentionally excluded —
