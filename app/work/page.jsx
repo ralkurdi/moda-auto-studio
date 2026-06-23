@@ -53,11 +53,76 @@ export default function WorkPage() {
 
   return (
     <Screen title="Portfolio">
+      {/* Instagram feed via Elfsight widget (now at the top of /work).
+          Renders only when NEXT_PUBLIC_ELFSIGHT_WIDGET_ID is set.
+          Widget loads client-side via elfsightcdn.com/platform.js. */}
+      {ELFSIGHT_WIDGET_ID && (
+        <section
+          className="container"
+          style={{
+            paddingTop: "clamp(20px, 3vw, 56px)",
+            paddingBottom: "clamp(28px, 4vw, 64px)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "baseline",
+              marginBottom: "clamp(14px, 2vw, 28px)",
+              flexWrap: "wrap",
+              gap: 8,
+            }}
+          >
+            <div>
+              <Ey>From the bay</Ey>
+              <div
+                style={{
+                  fontFamily: "var(--serif)",
+                  fontSize: "clamp(24px, 3vw, 36px)",
+                  color: "var(--bone)",
+                  marginTop: 8,
+                  lineHeight: 1.1,
+                }}
+              >
+                @{IG_HANDLE}
+              </div>
+            </div>
+            <a
+              href={`https://instagram.com/${IG_HANDLE}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: "var(--accent)",
+                fontFamily: "var(--mono)",
+                fontSize: 11,
+                letterSpacing: ".18em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+              }}
+            >
+              Follow →
+            </a>
+          </div>
+
+          <div
+            className={`elfsight-app-${ELFSIGHT_WIDGET_ID}`}
+            data-elfsight-app-lazy
+          />
+          <Script
+            src="https://elfsightcdn.com/platform.js"
+            strategy="afterInteractive"
+            async
+          />
+        </section>
+      )}
+
       <section
         className="container"
         style={{
           paddingTop: "clamp(20px, 3vw, 56px)",
           paddingBottom: "clamp(12px, 1.5vw, 24px)",
+          borderTop: ELFSIGHT_WIDGET_ID ? "1px solid var(--line)" : "none",
         }}
       >
         <Ey>Before / After</Ey>
@@ -126,74 +191,6 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Instagram feed via Elfsight widget.
-          Replaces the shelved Meta Graph API integration (deleted in this
-          commit). The widget pulls the latest @modaautostudio posts client-
-          side via Elfsight's platform.js and renders inside the elfsight-app-
-          [id] container. Configure layout, post count, and branding from the
-          Elfsight dashboard at elfsight.com. Renders only when the env var
-          is set — keeps the section clean while the widget is being set up. */}
-      {ELFSIGHT_WIDGET_ID && (
-        <section
-          className="container"
-          style={{
-            paddingTop: "clamp(36px, 5vw, 80px)",
-            paddingBottom: "clamp(36px, 5vw, 80px)",
-            borderTop: "1px solid var(--line)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
-              marginBottom: "clamp(14px, 2vw, 28px)",
-              flexWrap: "wrap",
-              gap: 8,
-            }}
-          >
-            <div>
-              <Ey>From the bay</Ey>
-              <div
-                style={{
-                  fontFamily: "var(--serif)",
-                  fontSize: "clamp(24px, 3vw, 36px)",
-                  color: "var(--bone)",
-                  marginTop: 8,
-                  lineHeight: 1.1,
-                }}
-              >
-                @{IG_HANDLE}
-              </div>
-            </div>
-            <a
-              href={`https://instagram.com/${IG_HANDLE}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                color: "var(--accent)",
-                fontFamily: "var(--mono)",
-                fontSize: 11,
-                letterSpacing: ".18em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-              }}
-            >
-              Follow →
-            </a>
-          </div>
-
-          <div
-            className={`elfsight-app-${ELFSIGHT_WIDGET_ID}`}
-            data-elfsight-app-lazy
-          />
-          <Script
-            src="https://elfsightcdn.com/platform.js"
-            strategy="afterInteractive"
-            async
-          />
-        </section>
-      )}
     </Screen>
   );
 }
