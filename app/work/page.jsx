@@ -188,7 +188,7 @@ export default function WorkPage() {
             data-elfsight-app-lazy
           />
           <Script
-            src="https://static.elfsight.com/platform/platform.js"
+            src="https://elfsightcdn.com/platform.js"
             strategy="afterInteractive"
             async
           />
