@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "../../../_lib/supabase/server";
 import { sendSMS, fmtDate } from "../../../_lib/twilio";
-import { sendClientConfirmation, sendOwnerNotification } from "../../../_lib/mail";
-import { createDepositSession } from "../../../_lib/stripe";
+import { sendOwnerNotification } from "../../../_lib/mail";
+import { createConfirmToken } from "../../../_lib/booking-confirm";
 
 export const dynamic = "force-dynamic";
 
@@ -119,47 +119,39 @@ export async function POST(req) {
     );
   }
 
-  // Generate Stripe Checkout Session for deposits BEFORE firing emails so
-  // the URL can be threaded into the client confirmation.
-  let depositUrl = null;
-  if (deposit_required) {
-    const vehicle_label = [vehicle.year, vehicle.make, vehicle.model]
-      .filter(Boolean)
-      .join(" ");
-    const deposit = await createDepositSession({
-      reservation_ref: inserted.reservation_ref,
-      booking_id: inserted.id,
-      client_email,
-      vehicle_label,
-    });
-    if (deposit.ok) {
-      depositUrl = deposit.url;
-      // Persist the URL + session id on the booking row for later reference
-      // (admin dashboard, refund triggers, etc.).
-      const { error: updateErr } = await supabase
-        .from("bookings")
-        .update({
-          deposit_stripe_url: deposit.url,
-          deposit_stripe_id: deposit.id,
-        })
-        .eq("id", inserted.id);
-      if (updateErr) {
-        console.error(
-          "[bookings.create] saving deposit_stripe_url failed:",
-          updateErr.message
-        );
-      }
-    } else {
-      console.error(
-        "[bookings.create] Stripe deposit session failed:",
-        deposit.error
-      );
-    }
+  // Generate signed tokens for the owner's confirm/decline magic links.
+  // Stripe deposit URL is no longer generated here — it's created later in
+  // the confirm flow (app/_lib/booking-actions.js), so the link in the
+  // client's confirmation email is always fresh (Stripe Checkout Sessions
+  // expire after 24h).
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://modaautostudiosf.com";
+
+  let confirmUrl = null;
+  let declineUrl = null;
+  try {
+    confirmUrl = `${siteUrl}/confirm/${createConfirmToken(
+      inserted.id,
+      "confirm"
+    )}`;
+    declineUrl = `${siteUrl}/decline/${createConfirmToken(
+      inserted.id,
+      "decline"
+    )}`;
+  } catch (e) {
+    console.error(
+      "[bookings.create] failed to mint confirm/decline tokens:",
+      e.message
+    );
+    // Owner still gets the email, just without action buttons — they can
+    // confirm by editing the booking row directly in Supabase.
   }
 
-  // Fire SMS and email notifications — to the client + to the owner.
-  // Awaited via allSettled so a single transport failure doesn't take down
-  // the booking response. Twilio helper no-ops when creds missing.
+  // Fire SMS + owner notification only. Client confirmation email is
+  // deferred to the owner-confirm step so the studio reviews availability
+  // before the client receives an "all locked in" email.
+  // Promise.allSettled prevents one transport failure from taking down
+  // the booking response.
   const notifyBooking = {
     reservation_ref: inserted.reservation_ref,
     slot,
@@ -172,7 +164,8 @@ export async function POST(req) {
     client_email,
     total,
     deposit_required,
-    deposit_url: depositUrl,
+    confirm_url: confirmUrl,
+    decline_url: declineUrl,
   };
 
   const notifyResults = await Promise.allSettled([
@@ -191,13 +184,10 @@ export async function POST(req) {
         total,
       }),
     }),
-    sendClientConfirmation(notifyBooking),
     sendOwnerNotification(notifyBooking),
   ]);
 
-  // Log delivery failures server-side but don't surface to the client —
-  // the booking itself succeeded and the row is stored.
-  const labels = ["SMS→client", "SMS→owner", "email→client", "email→owner"];
+  const labels = ["SMS→client", "SMS→owner", "email→owner"];
   notifyResults.forEach((r, i) => {
     const who = labels[i];
     if (r.status === "rejected") {

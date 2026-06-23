@@ -186,7 +186,9 @@ export default function BookConfirmPage() {
                   <span style={{ color: "var(--bone)" }}>complimentary</span>{" "}
                   and run about 45 minutes. Bring the car as it is —
                   we&rsquo;ll walk through paint condition, service options,
-                  and timing. No deposit, no obligation.
+                  and timing. No deposit, no obligation. A technician will
+                  review and confirm availability before you receive the
+                  final reservation email.
                 </>
               ) : requiresDeposit ? (
                 <>
@@ -194,14 +196,16 @@ export default function BookConfirmPage() {
                   <span style={{ color: "var(--bone)" }}>
                     $300 refundable deposit
                   </span>{" "}
-                  is required to reserve your bay. We&rsquo;ll email you a
-                  secure payment link with your confirmation — fully
-                  refundable up to 72 hours before your appointment.
+                  is required to reserve your bay. A technician will review
+                  your request first — once they confirm availability,
+                  you&rsquo;ll receive an email with a secure payment link.
+                  Fully refundable up to 72 hours before your appointment.
                 </>
               ) : (
                 <>
-                  This service doesn&rsquo;t require a deposit. A
-                  confirmation email is on its way.
+                  This service doesn&rsquo;t require a deposit. A technician
+                  will review your request and send a confirmation email
+                  once availability is verified.
                 </>
               )}
             </div>

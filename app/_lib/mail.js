@@ -282,10 +282,31 @@ function buildOwnerHTML(booking) {
     .join(" ") || "—";
   const services = (booking.services || []).join(", ") || "—";
 
+  const actionButtons =
+    booking.confirm_url && booking.decline_url
+      ? `
+      <div style="text-align:center;padding:28px 0 8px;">
+        <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#8a857a;margin-bottom:14px;">
+          Bay availability check
+        </div>
+        <a href="${booking.confirm_url}" style="display:inline-block;background:#C9A961;color:#0B0B0C;padding:14px 32px;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;border:1px solid #C9A961;margin:0 6px 8px;">
+          Confirm
+        </a>
+        <a href="${booking.decline_url}" style="display:inline-block;background:transparent;color:#C9A961;padding:14px 32px;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;border:1px solid #C9A961;margin:0 6px 8px;">
+          Decline
+        </a>
+        <div style="margin-top:12px;font-size:11px;color:#8a857a;line-height:1.5;">
+          Client receives the confirmation email + ${
+            booking.deposit_required ? "$300 deposit link " : ""
+          }only after you confirm.
+        </div>
+      </div>`
+      : "";
+
   const body = `
     <tr><td style="padding:32px 40px;">
       <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#C9A961;">
-        New ${booking.slot?.kind || "Booking"} · #${booking.reservation_ref}
+        New request · ${booking.slot?.kind || "Booking"} · #${booking.reservation_ref}
       </div>
       <h1 style="font-family:Georgia,'Times New Roman',serif;font-weight:500;font-size:24px;line-height:1.2;margin:10px 0 20px;color:#0B0B0C;">
         ${car}
@@ -297,16 +318,9 @@ function buildOwnerHTML(booking) {
         ${row("Tier", booking.tier || "—")}
         ${row("Services", services)}
         ${row("Estimate", booking.total ? `$${booking.total.toLocaleString()}` : "—")}
-        ${row("Deposit", booking.deposit_required ? (booking.deposit_url ? "$300 link sent" : "Required ($300) — link failed") : "Not required")}
+        ${row("Deposit", booking.deposit_required ? "Required ($300) — link generated on confirm" : "Not required")}
       </table>
-      ${
-        booking.deposit_url
-          ? `
-      <div style="margin-top:14px;font-size:12px;color:#3a3a3f;">
-        Stripe Checkout: <a href="${booking.deposit_url}" style="color:#8C6B2F;">${booking.deposit_url}</a>
-      </div>`
-          : ""
-      }
+      ${actionButtons}
       ${
         booking.notes
           ? `
@@ -320,8 +334,91 @@ function buildOwnerHTML(booking) {
   `;
 
   return shell({
-    preheader: `${car} · ${slotTime} on ${date}`,
+    preheader: `${car} · ${slotTime} on ${date} — needs confirm/decline`,
     bodyHtml: body,
+  });
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Client decline email — sent when owner clicks "Decline" on the
+// confirmation flow. Friendly tone, invites the client to reply with
+// alternate slots.
+// ───────────────────────────────────────────────────────────────────────────
+function buildClientDeclineHTML(booking) {
+  const date = fmtDateLong(booking.date);
+  const slotTime = booking.slot?.t || "your slot";
+  const car = [booking.vehicle?.year, booking.vehicle?.make, booking.vehicle?.model]
+    .filter(Boolean)
+    .join(" ") || "Your vehicle";
+  const reason = booking.decline_reason?.trim();
+
+  const body = `
+    <tr><td style="padding:32px 40px 8px;">
+      <div style="font-family:'Courier New',Courier,monospace;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#C9A961;">
+        About your request · #${booking.reservation_ref}
+      </div>
+      <h1 style="font-family:Georgia,'Times New Roman',serif;font-weight:500;font-size:30px;line-height:1.15;letter-spacing:-0.4px;margin:14px 0 0;color:#0B0B0C;">
+        We couldn't lock in this exact slot.
+      </h1>
+      <p style="font-size:14px;line-height:1.6;color:#3a3a3f;margin:16px 0 0;">
+        Thanks for reaching out about ${car}. We weren't able to accommodate
+        ${slotTime} on ${date} for this project — the bay is committed to
+        another car on that date.
+      </p>
+      ${
+        reason
+          ? `
+      <div style="margin-top:18px;padding:14px;background:#F5F1E8;border-left:3px solid #C9A961;font-size:13.5px;line-height:1.55;color:#0B0B0C;font-style:italic;">
+        ${reason}
+      </div>`
+          : ""
+      }
+      <p style="font-size:14px;line-height:1.6;color:#3a3a3f;margin:18px 0 0;">
+        Reply to this email and we'll find a window that works.
+        Most projects land within 1–3 weeks of the original date.
+      </p>
+    </td></tr>
+    <tr><td style="padding:24px 40px 32px;font-size:13px;line-height:1.6;color:#3a3a3f;">
+      Looking forward to it.
+    </td></tr>
+  `;
+
+  return shell({
+    preheader: `About your request for ${slotTime} on ${date}.`,
+    bodyHtml: body,
+  });
+}
+
+function buildClientDeclineText(booking) {
+  const date = fmtDateLong(booking.date);
+  const slotTime = booking.slot?.t || "your slot";
+  const car = [booking.vehicle?.year, booking.vehicle?.make, booking.vehicle?.model]
+    .filter(Boolean)
+    .join(" ") || "Your vehicle";
+
+  return `MODA Auto Studio
+
+About your request · #${booking.reservation_ref}
+
+Thanks for reaching out about ${car}. We weren't able to accommodate ${slotTime} on ${date} for this project — the bay is committed to another car on that date.
+${booking.decline_reason ? `\n${booking.decline_reason}\n` : ""}
+Reply to this email and we'll find a window that works. Most projects land within 1–3 weeks of the original date.
+
+${STUDIO.address}
+${STUDIO.hours}
+`;
+}
+
+export async function sendClientDecline(booking) {
+  if (!booking.client_email) {
+    return { ok: false, error: "No client email — skipped" };
+  }
+  const subject = `About your MODA reservation request · #${booking.reservation_ref}`;
+  return sendEmail({
+    to: booking.client_email,
+    subject,
+    html: buildClientDeclineHTML(booking),
+    text: buildClientDeclineText(booking),
   });
 }
 
@@ -390,7 +487,7 @@ export async function sendOwnerNotification(booking) {
     .filter(Boolean)
     .join(" ") || "—";
   const totalLabel = booking.total ? ` · $${booking.total.toLocaleString()}` : "";
-  const subject = `New ${booking.slot?.kind || "booking"} · #${booking.reservation_ref} · ${car}${totalLabel}`;
+  const subject = `Action needed · #${booking.reservation_ref} · ${car}${totalLabel}`;
   return sendEmail({
     to: ownerEmail,
     subject,

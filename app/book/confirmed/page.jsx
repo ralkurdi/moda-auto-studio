@@ -16,17 +16,17 @@ const fmt = (d) =>
     : "";
 
 const NEXT_APPOINTMENT = [
-  ["72h before", "We confirm by text. Reply to reschedule."],
+  ["Within 1 hour", "A technician reviews your request + checks the bay schedule."],
+  ["After confirm", "Reservation email + (if applicable) $300 deposit link."],
   ["Day of", "Drop the car at your slot sharp. Coffee on us."],
-  ["During", "Daily progress photos from the bay."],
   ["Handoff", "Walkthrough + care kit + warranty QR."],
 ];
 
 const NEXT_CONSULTATION = [
-  ["72h before", "We confirm by text. Reply to reschedule."],
+  ["Within 1 hour", "A technician reviews your request + checks the bay schedule."],
+  ["After confirm", "Reservation email locks in your consultation slot."],
   ["Day of", "Bring the car in. We walk through scope together."],
-  ["At the studio", "Paint inspection + service options + timing."],
-  ["Within 24h", "Tailored quote sent to your phone or email."],
+  ["Within 24h after", "Tailored quote sent to your phone or email."],
 ];
 
 export default function BookConfirmedPage() {
@@ -35,7 +35,9 @@ export default function BookConfirmedPage() {
   const [showSms, setShowSms] = useState(false);
   const reservationRef = booking.reservation_ref || "—";
   const isConsultation = booking.slot?.kind === "Consultation";
-  const refLabel = isConsultation ? "Consultation booked" : "Bay reserved";
+  const refLabel = isConsultation
+    ? "Consultation request received"
+    : "Request received";
   const timeline = isConsultation ? NEXT_CONSULTATION : NEXT_APPOINTMENT;
 
   useEffect(() => {
@@ -74,13 +76,7 @@ export default function BookConfirmedPage() {
           {refLabel} · #{reservationRef}
         </Ey>
         <SH size={36} style={{ marginTop: 12 }}>
-          See you{" "}
-          {booking.date
-            ? booking.date
-                .toLocaleDateString("en-US", { weekday: "long" })
-                .toLowerCase()
-            : "soon"}
-          .
+          Thanks &mdash; we&rsquo;ll be in touch shortly.
         </SH>
         <div
           style={{
@@ -88,29 +84,28 @@ export default function BookConfirmedPage() {
             color: "var(--bone-2)",
             marginTop: 12,
             lineHeight: 1.55,
-            maxWidth: 300,
+            maxWidth: 340,
             marginInline: "auto",
           }}
         >
-          {isConsultation ? (
-            <>
-              We&rsquo;ve set aside {booking.slot?.t || "your slot"} on{" "}
-              {fmt(booking.date) || "your date"} for your consultation. A
-              confirmation email is on its way.
-            </>
-          ) : (
-            <>
-              We&rsquo;ve blocked {booking.slot?.t || "your slot"} on{" "}
-              {fmt(booking.date) || "your date"}.{" "}
-              {(booking.total || 0) >= 1000
-                ? "Check your email for the $300 deposit link to lock the bay."
-                : "A confirmation email is on its way."}
-            </>
-          )}
+          We received your request for{" "}
+          <span style={{ color: "var(--bone)" }}>
+            {booking.slot?.t || "your slot"}
+          </span>{" "}
+          on{" "}
+          <span style={{ color: "var(--bone)" }}>
+            {fmt(booking.date) || "your date"}
+          </span>
+          . A technician will review availability and email your final
+          reservation
+          {!isConsultation && (booking.total || 0) >= 1000
+            ? " with the $300 deposit link"
+            : ""}{" "}
+          within an hour.
         </div>
       </div>
       <div className="container-narrow">
-        <Ey>Text confirmation</Ey>
+        <Ey>Acknowledgment</Ey>
         <div
           style={{
             marginTop: 12,
@@ -164,26 +159,15 @@ export default function BookConfirmedPage() {
                   animation: "fadeUp .4s",
                 }}
               >
-                {isConsultation ? (
-                  <>
-                    Confirmed. Consultation at {booking.slot?.t} on{" "}
-                    {fmt(booking.date)}.
-                  </>
-                ) : (
-                  <>
-                    You&rsquo;re in. {booking.slot?.t} on {fmt(booking.date)},
-                    Bay 01.
-                  </>
-                )}
+                Got it. We received your request for {booking.slot?.t} on{" "}
+                {fmt(booking.date)}.
                 <br />
                 <br />
-                Address:{" "}
-                <span style={{ color: "var(--accent)" }}>
-                  52 S Linden Ave #2, South SF 94080
-                </span>
+                A technician will confirm bay availability and send your
+                final reservation email shortly.
                 <br />
-                Reply <b>R</b> to reschedule, <b>D</b> for directions,{" "}
-                <b>C</b> to cancel.
+                <br />
+                Reply to this thread anytime with questions.
               </div>
             ) : (
               <div style={{ display: "flex", gap: 4, padding: "18px 14px" }}>
