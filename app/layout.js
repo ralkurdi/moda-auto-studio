@@ -35,7 +35,7 @@ const localBusinessSchema = {
   name: "MODA Auto Studio",
   description:
     "Premium automotive finishing studio in South San Francisco offering vinyl wraps, paint protection film, ceramic window tint, ceramic coating, and paint correction. By appointment only.",
-  image: `${SITE_URL}/og.png`,
+  image: `${SITE_URL}/opengraph-image`,
   url: SITE_URL,
   telephone: "+1-415-555-0192",
   email: "book@modaautostudio.com",
