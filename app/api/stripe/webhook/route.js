@@ -41,13 +41,18 @@ export async function POST(req) {
   const reservation_ref = session.metadata?.reservation_ref;
 
   if (!booking_id) {
-    console.error("[stripe.webhook] checkout.session.completed without booking_id metadata", {
-      session_id: session.id,
-    });
-    return NextResponse.json(
-      { ok: false, error: "Missing booking_id metadata on session" },
-      { status: 400 }
+    // Sessions without booking_id metadata aren't ours to update — most
+    // commonly Stripe Dashboard "Send test webhook" events. Acknowledge
+    // with 200 so Stripe stops retrying; log so we'd catch a real bug
+    // (a production booking somehow missing metadata).
+    console.warn(
+      "[stripe.webhook] checkout.session.completed without booking_id metadata (skipping — likely a test event)",
+      { session_id: session.id }
     );
+    return NextResponse.json({
+      ok: true,
+      skipped: "No booking_id metadata on session",
+    });
   }
 
   const supabase = supabaseServer();
