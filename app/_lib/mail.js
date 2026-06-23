@@ -76,17 +76,9 @@ const STUDIO = {
 // Inline-styled HTML email template. Tables for layout, web-safe fonts as
 // fallbacks for Cormorant Garamond. 600px max width.
 //
-// TODO(future): email layout polish pass — check typography hierarchy on
-// Gmail mobile + Apple Mail + Outlook web, add a small Stripe security badge
-// or lock icon next to the deposit CTA so clients recognize "this is a
-// secure payment link" at a glance, tighten the spacing in the
-// what-happens-next timeline, and consider a brand-tinted hero image at the
-// top of each email once we have real photos.
-//
-// TODO(future): owner email currently shows the deposit URL as a plain text
-// link in buildOwnerHTML (search for "Stripe Checkout:"). Promote that to
-// the same gold button treatment the client email uses so the owner can
-// one-tap the link from their phone inbox.
+// TODO(future): once real studio photography exists, consider a brand-tinted
+// hero image strip at the top of each email (currently the header is just
+// the MOD-A wordmark on a centered white card).
 function shell({ preheader, bodyHtml }) {
   return `<!doctype html>
 <html lang="en">
@@ -192,8 +184,12 @@ function buildClientHTML(booking) {
       <a href="${booking.deposit_url}" style="display:inline-block;background:#C9A961;color:#0B0B0C;padding:16px 36px;font-family:'Courier New',Courier,monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;text-decoration:none;border:1px solid #C9A961;">
         Pay $300 deposit
       </a>
-      <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#8a857a;">
-        Fully refundable up to 72 hours before your appointment.
+      <div style="margin-top:18px;font-size:11px;line-height:1.7;color:#8a857a;font-family:'Courier New',Courier,monospace;letter-spacing:0.04em;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8a857a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:6px;">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        Secured payment via <span style="color:#0B0B0C;font-weight:500;">Stripe</span> &middot; refundable up to 72 hours before
       </div>
     </td></tr>`
         : ""
@@ -264,7 +260,7 @@ ${
     : ""
 }${
     booking.deposit_url
-      ? `\nReserve your bay — pay the $300 refundable deposit:\n${booking.deposit_url}\n(Fully refundable up to 72 hours before your appointment.)\n`
+      ? `\nReserve your bay — pay the $300 refundable deposit:\n${booking.deposit_url}\n(Secured payment via Stripe. Fully refundable up to 72 hours before your appointment.)\n`
       : ""
   }
 ${STUDIO.address}
