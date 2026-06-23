@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import { Ey, SH, Ph } from "../_lib/design";
 import { Screen } from "../_components/screen-shell";
 import { BeforeAfter } from "../_components/before-after";
 
 const IG_HANDLE = "modaautostudio";
+const ELFSIGHT_WIDGET_ID = process.env.NEXT_PUBLIC_ELFSIGHT_WIDGET_ID || "";
 
 const ITEMS = [
   {
@@ -49,24 +50,6 @@ const ITEMS = [
 
 export default function WorkPage() {
   const router = useRouter();
-  const [igPosts, setIgPosts] = useState([]);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/instagram/feed")
-      .then((r) => r.json())
-      .then((data) => {
-        if (!cancelled && Array.isArray(data?.posts)) {
-          setIgPosts(data.posts);
-        }
-      })
-      .catch(() => {
-        // Silent — section just won't render if the API call fails.
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   return (
     <Screen title="Portfolio">
@@ -143,13 +126,14 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Instagram feed — SHELVED until the @modaautostudio account exits
-          Meta's review and we can generate a long-lived Graph API token.
-          The section is conditionally rendered, so until INSTAGRAM_ACCESS_TOKEN
-          + INSTAGRAM_USER_ID are populated in .env.local, nothing appears.
-          Re-enable by completing the Meta Developer walkthrough and adding
-          the env vars — no further code changes needed. */}
-      {igPosts.length > 0 && (
+      {/* Instagram feed via Elfsight widget.
+          Replaces the shelved Meta Graph API integration (deleted in this
+          commit). The widget pulls the latest @modaautostudio posts client-
+          side via Elfsight's platform.js and renders inside the elfsight-app-
+          [id] container. Configure layout, post count, and branding from the
+          Elfsight dashboard at elfsight.com. Renders only when the env var
+          is set — keeps the section clean while the widget is being set up. */}
+      {ELFSIGHT_WIDGET_ID && (
         <section
           className="container"
           style={{
@@ -200,47 +184,14 @@ export default function WorkPage() {
           </div>
 
           <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-              gap: "clamp(6px, 1vw, 12px)",
-            }}
-          >
-            {igPosts.map((p) => {
-              const src =
-                p.media_type === "VIDEO" ? p.thumbnail_url || p.media_url : p.media_url;
-              return (
-                <a
-                  key={p.id}
-                  href={p.permalink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    aspectRatio: "1",
-                    background: "var(--ink-2)",
-                    border: "1px solid var(--line)",
-                    display: "block",
-                    overflow: "hidden",
-                    position: "relative",
-                  }}
-                  aria-label={p.caption?.slice(0, 80) || "Instagram post"}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={src}
-                    alt=""
-                    loading="lazy"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
-                  />
-                </a>
-              );
-            })}
-          </div>
+            className={`elfsight-app-${ELFSIGHT_WIDGET_ID}`}
+            data-elfsight-app-lazy
+          />
+          <Script
+            src="https://static.elfsight.com/platform/platform.js"
+            strategy="afterInteractive"
+            async
+          />
         </section>
       )}
     </Screen>
