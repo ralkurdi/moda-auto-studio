@@ -37,7 +37,7 @@ const TOOLS = [
 const TIMELINE = [
   ["Day 1", "Intake, decon wash, claybar, test panel for paint thickness"],
   ["Day 2", "Compound — heavy cut on defect-prone panels"],
-  ["Day 3", "Polish — refine to swirl-free under tungsten + LED"],
+  ["Day 3", "Polish — refine to swirl-free under controlled lighting"],
   ["Day 4", "Finishing polish + IPA wipe; ready for coating or wax"],
 ];
 
@@ -73,7 +73,7 @@ export default function PaintCorrectionPage() {
           Multi-stage machine polish to remove swirl marks, oxidation,
           holograms, and light scratches. The required prep step before any
           ceramic coating — and the difference between &ldquo;clean&rdquo;
-          and &ldquo;wet-looking under tungsten&rdquo;.
+          and &ldquo;wet-looking under any light&rdquo;.
         </div>
 
         <Rule style={{ margin: "clamp(24px, 3vw, 40px) 0" }} />

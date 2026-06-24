@@ -64,11 +64,31 @@ const CATS = [
     href: "/services/chrome-delete",
     kicker: "Trim",
     title: "Chrome delete",
-    from: "$395",
+    from: "Inquire",
     bullets: [
-      "Badge blackout",
-      "Window surrounds",
+      "Body trim + emblem blackout",
+      "Window trims",
       "Headlight / taillight tint",
+    ],
+  },
+  {
+    kicker: "Decals",
+    title: "Custom decals",
+    from: "Inquire",
+    bullets: [
+      "Vehicle livery + race graphics",
+      "Logo + lettering",
+      "One-offs + small batches",
+    ],
+  },
+  {
+    kicker: "Fleet",
+    title: "Commercial fleet graphics",
+    from: "Inquire",
+    bullets: [
+      "Multi-vehicle branding",
+      "Logo, lettering, full wraps",
+      "Volume + repeat-fleet pricing",
     ],
   },
 ];

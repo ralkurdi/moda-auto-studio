@@ -6,39 +6,39 @@ import { Screen } from "../../_components/screen-shell";
 
 const COVERAGE = [
   {
-    name: "Window Surrounds",
-    from: "$395",
+    name: "Window Trims",
+    from: "Inquire for quote",
     desc: "Just the chrome strips around the door windows. Cleanest entry point — the single most-visible change.",
   },
   {
-    name: "Surrounds + Badges",
-    from: "$495",
-    desc: "Window surrounds plus model badges, manufacturer emblem, and trunk lettering. The factory-stealth look.",
+    name: "Trims + Emblems",
+    from: "Inquire for quote",
+    desc: "Window trims plus model emblems, manufacturer emblem, and trunk lettering. The factory-stealth look.",
   },
   {
     name: "Full Blackout",
-    from: "$695",
-    desc: "Surrounds + badges + kidney grills + mirror caps + side gills. Every chrome-finish accent goes matte black.",
+    from: "Inquire for quote",
+    desc: "Trims + emblems + kidney grills + mirror caps + side gills. Every chrome-finish accent goes matte black.",
   },
   {
     name: "Headlight · Taillight Tint",
-    from: "+$195",
+    from: "Inquire for quote",
     desc: "Add-on. Smoked nano-ceramic film over headlights or taillights. Subtle darkening, fully legal at conservative VLT.",
   },
 ];
 
 const MATERIALS = [
-  { n: "3M 1080 Satin Black", note: "Cast vinyl, 8-yr" },
-  { n: "Avery SW900 Matte Black", note: "Conformable cast" },
-  { n: "Hexis Bodyfence", note: "Optional overlaminate" },
-  { n: "Pre-cut templates", note: "Computer-matched to OEM trim" },
+  { n: "3M 2080 Gloss Black", note: "Cast vinyl, 10-yr" },
+  { n: "3M 2080 Matte Black", note: "Cast vinyl, 10-yr" },
+  { n: "3M 2080 Satin Black", note: "Cast vinyl, 10-yr" },
+  { n: "3M 2080 · any color", note: "Cast vinyl, 10-yr" },
 ];
 
 const TIMELINE = [
-  ["Day 1", "Wash, decon, remove badges + trims where feasible"],
+  ["Day 1", "Wash, decon, remove emblems + trims where feasible"],
   ["Day 1", "Surface heat-mapping, panel-by-panel vinyl application"],
   ["Day 2", "Edge tucking, IPA wipe-down, reinstall hardware"],
-  ["Day 2", "QC under tungsten + LED, photo handoff"],
+  ["Day 2", "QC under controlled lighting, photo handoff"],
 ];
 
 export default function ChromeDeletePage() {
@@ -225,19 +225,31 @@ export default function ChromeDeletePage() {
             border: "1px solid var(--line)",
           }}
         >
-          <Ey>Starting at</Ey>
+          <Ey>Pricing</Ey>
           <div
             style={{
               fontFamily: "var(--serif)",
-              fontSize: "clamp(32px, 3.6vw, 48px)",
-              marginTop: 4,
+              fontSize: "clamp(22px, 2.4vw, 30px)",
+              marginTop: 6,
               color: "var(--bone)",
+              lineHeight: 1.3,
             }}
           >
-            $395{" "}
-            <span style={{ fontSize: "clamp(14px, 1.2vw, 17px)", color: "var(--mute)" }}>
-              sedan · window surrounds
+            Quoted per vehicle.{" "}
+            <span style={{ color: "var(--accent)" }}>
+              Inquire for a custom quote.
             </span>
+          </div>
+          <div
+            style={{
+              fontSize: "clamp(12px, 1vw, 14px)",
+              color: "var(--bone-2)",
+              marginTop: 10,
+              lineHeight: 1.55,
+            }}
+          >
+            Scope depends on the vehicle, the trim, and the color of vinyl —
+            we&rsquo;ll walk through it on intake or by text.
           </div>
         </div>
         <GBtn

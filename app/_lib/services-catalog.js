@@ -46,7 +46,7 @@ export const SERVICE_CATALOG = [
     time: "2 days",
     base: [1750, 3000],
     tagline: "Bumper, hood, fenders, mirrors. The high-impact zones.",
-    materials: ["3M Pro Series PPF", "XPEL Ultimate Plus 10", "SunTek Reaction"],
+    materials: ["3M Scotchgard Pro Series", "3M Scotchgard Pro Series Matte"],
     warranty: "10-year self-healing · transferable",
     detail:
       "Self-healing 8-mil urethane film with hydrophobic top-coat. Yellowing-resistant. Track package available with rocker and A-pillar coverage.",
@@ -58,7 +58,7 @@ export const SERVICE_CATALOG = [
     time: "6–8 days",
     base: [7500, 10000],
     tagline: "Every painted panel. Total protection.",
-    materials: ["3M Pro Series PPF", "XPEL Ultimate Plus 10", "STEK Dynoshield"],
+    materials: ["3M Scotchgard Pro Series", "3M Scotchgard Pro Series Matte"],
     warranty: "10-year manufacturer warranty · VIN-registered",
     detail:
       "Complete coverage including rockers, lower doors, and A-pillars. Computer-cut for perfect panel fit. Photographed daily for warranty record.",

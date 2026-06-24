@@ -10,7 +10,7 @@ const FILMS = [
   { n: "Matte", c: "#1a1a1c" },
   { n: "Chrome", c: "linear-gradient(135deg,#d9d6cf,#6b6a65)" },
   { n: "Color-flip", c: "linear-gradient(135deg,#6d2c2c,#2c3a6d)" },
-  { n: "PPF-clear", c: "rgba(237,232,222,0.08)" },
+  { n: "Color PPF", c: "linear-gradient(135deg,#1f4a3b,#2c6e5b)" },
 ];
 
 const TIMELINE = [
@@ -140,28 +140,51 @@ export default function VinylWrapsPage() {
           ))}
         </div>
 
+        <Ey style={{ marginTop: "clamp(24px, 3vw, 40px)" }}>
+          Starting prices · full color change
+        </Ey>
         <div
-          style={{
-            marginTop: "clamp(20px, 2.5vw, 36px)",
-            padding: "clamp(14px, 1.8vw, 24px)",
-            background: "var(--ink-2)",
-            border: "1px solid var(--line)",
-          }}
+          className="grid-2"
+          style={{ marginTop: "clamp(12px, 1.6vw, 20px)" }}
         >
-          <Ey>Starting at</Ey>
-          <div
-            style={{
-              fontFamily: "var(--serif)",
-              fontSize: "clamp(32px, 3.6vw, 48px)",
-              marginTop: 4,
-              color: "var(--bone)",
-            }}
-          >
-            $4,500{" "}
-            <span style={{ fontSize: "clamp(14px, 1.2vw, 17px)", color: "var(--mute)" }}>
-              sedan · full color change
-            </span>
-          </div>
+          {[
+            { tier: "Coupe", from: "$3,000" },
+            { tier: "Sedan", from: "$4,500" },
+            { tier: "SUV", from: "$5,500" },
+            { tier: "Exotic", from: "Custom inquiry" },
+          ].map((p) => (
+            <div
+              key={p.tier}
+              style={{
+                padding: "clamp(14px, 1.8vw, 22px)",
+                border: "1px solid var(--line)",
+                background: "var(--ink-2)",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+                gap: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--serif)",
+                  fontSize: "clamp(18px, 1.7vw, 22px)",
+                }}
+              >
+                {p.tier}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--mono)",
+                  fontSize: "clamp(13px, 1.1vw, 15px)",
+                  color: "var(--accent)",
+                  letterSpacing: ".04em",
+                }}
+              >
+                {p.from}
+              </div>
+            </div>
+          ))}
         </div>
         <GBtn
           style={{ width: "100%", marginTop: 16 }}

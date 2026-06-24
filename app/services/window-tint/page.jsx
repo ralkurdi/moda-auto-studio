@@ -168,10 +168,10 @@ export default function WindowTintPage() {
               marginTop: 4,
             }}
           >
-            {vlt === 5 && "Limo — rear only in CA."}
+            {vlt === 5 && "Limo black. Maximum privacy."}
             {vlt === 20 && "Privacy with visibility."}
             {vlt === 35 && "The crowd favorite."}
-            {vlt === 50 && "OEM-plus. Legal front."}
+            {vlt === 50 && "OEM-plus. Subtle darkening."}
             {vlt === 70 && "Ceramic clear. IR only."}
           </div>
           <div
@@ -182,9 +182,9 @@ export default function WindowTintPage() {
               lineHeight: 1.55,
             }}
           >
-            {vlt <= 35
-              ? "California law requires front doors ≥ 70% VLT. We install the legal complement on the front."
-              : "Fully street-legal all-around. Rejects up to 88% of infrared heat."}
+            Multi-layer nano-ceramic film. Rejects up to 88% of infrared
+            heat and 99.9% of UV. Will not interfere with GPS, phone, or
+            radio signals.
           </div>
         </div>
 

@@ -7,38 +7,36 @@ import { Screen } from "../../_components/screen-shell";
 const COVERAGE_TIERS = [
   {
     name: "Partial Front",
-    from: "$950",
+    from: "Starting at $950",
     desc: "Bumper + 24″ of hood. Covers the high-impact strike zone for daily commuters.",
   },
   {
     name: "Full Front",
-    from: "$1,895",
+    from: "Starting at $1,895",
     desc: "Bumper, hood, fenders, mirrors, A-pillars. The high-impact zones — most popular tier.",
   },
   {
     name: "Full Body",
-    from: "$5,995",
+    from: "Starting at $5,995",
     desc: "Every painted panel + rockers + door cups. Total protection. VIN-registered.",
   },
   {
     name: "Track Package",
-    from: "+$695",
+    from: "Starting at +$695",
     desc: "Add-on. Rockers, lower doors, A-pillars, front canards. For track or canyon days.",
   },
 ];
 
 const FILM_BRANDS = [
-  { n: "3M Pro Series", note: "Self-healing, 10-yr" },
-  { n: "XPEL Ultimate Plus 10", note: "Hydrophobic, 10-yr" },
-  { n: "SunTek Reaction", note: "8-mil urethane" },
-  { n: "STEK Dynoshield", note: "Track-rated" },
+  { n: "3M Scotchgard Pro Series", note: "Self-healing, 10-yr" },
+  { n: "3M Scotchgard Pro Series Matte", note: "Matte finish, 10-yr" },
 ];
 
 const TIMELINE = [
   ["Day 1", "Intake, wash, chemical decon, claybar, IPA wipe-down"],
   ["Day 2", "Disassembly: emblems, sensors, trims; alcohol prep"],
   ["Days 3–5", "Computer-cut PPF applied panel-by-panel, edges wrapped + tucked"],
-  ["Day 6–7", "Curing, QC under tungsten + LED, photo handoff"],
+  ["Day 6–7", "Curing, QC under controlled lighting, photo handoff"],
 ];
 
 export default function PaintProtectionFilmPage() {

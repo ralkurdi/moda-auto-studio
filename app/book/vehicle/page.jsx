@@ -5,38 +5,7 @@ import { useRouter } from "next/navigation";
 import { Ey, SH, GBtn, Progress } from "../../_lib/design";
 import { Screen } from "../../_components/screen-shell";
 import { useBooking } from "../../_lib/booking-context";
-
-const MAKES = [
-  "Porsche",
-  "BMW",
-  "Audi",
-  "Tesla",
-  "Mercedes-Benz",
-  "Lucid",
-  "Ferrari",
-  "Lamborghini",
-  "McLaren",
-  "Lexus",
-  "Honda",
-  "Toyota",
-];
-
-const MODELS = {
-  Porsche: ["911 Carrera", "911 GT3", "Taycan", "Cayenne GTS", "Macan"],
-  BMW: ["M3", "M4", "M5", "i4 M50", "X5M"],
-  Audi: ["RS6", "RS7", "R8", "E-tron GT"],
-  Tesla: ["Model S Plaid", "Model 3", "Model Y", "Cybertruck"],
-  "Mercedes-Benz": ["C63 AMG", "E63 AMG", "G63 AMG", "EQS"],
-  Lucid: ["Air Pure", "Air Touring", "Air GT"],
-  Ferrari: ["296 GTB", "SF90", "Roma"],
-  Lamborghini: ["Huracán", "Urus"],
-  McLaren: ["720S", "Artura"],
-  Lexus: ["LC500", "RC F", "IS500"],
-  Honda: ["Civic Type R", "S2000"],
-  Toyota: ["Supra", "GR86"],
-};
-
-const YEARS = ["2026", "2025", "2024", "2023", "2022", "2021", "2020", "2019", "2018"];
+import { MAKES, MODELS, YEARS } from "../../_lib/vehicles";
 
 const SelField = ({ label, value, onChange, options, placeholder }) => (
   <label style={{ display: "block", marginBottom: 14 }}>

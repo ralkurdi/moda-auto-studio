@@ -38,7 +38,7 @@ const TIMELINE = [
   ["Day 1", "Intake, wash, decon, iron + tar removal, claybar"],
   ["Day 2", "Paint correction · cut + polish to swirl-free finish"],
   ["Day 3", "IPA wipe, panel-by-panel coating application, cure"],
-  ["Day 4", "Final QC under tungsten + LED, photo handoff"],
+  ["Day 4", "Final QC under controlled lighting, photo handoff"],
 ];
 
 export default function CeramicCoatingPage() {
