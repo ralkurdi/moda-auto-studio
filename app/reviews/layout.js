@@ -1,12 +1,11 @@
 export const metadata = {
   title: "Reviews",
   description:
-    "What MODA Auto Studio owners say. 4.9 average across 148+ Google reviews from clients in South San Francisco, Burlingame, Palo Alto, San Mateo, and Daly City.",
+    "Real reviews from MODA Auto Studio clients across the Bay Area — paint protection film, vinyl wraps, ceramic window tint, ceramic coating, and paint correction.",
   alternates: { canonical: "/reviews" },
   openGraph: {
     title: "Reviews · MODA Auto Studio",
-    description:
-      "From our owners. 4.9 average across the Bay Area.",
+    description: "From our owners.",
     url: "/reviews",
   },
 };

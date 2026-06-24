@@ -3,62 +3,15 @@ import { Screen } from "../_components/screen-shell";
 import { supabaseServer } from "../_lib/supabase/server";
 
 // Re-render at most once an hour. The Google refresh runs separately
-// (via /api/reviews/refresh on a cron) so this just dictates how often
-// the rendered page picks up the latest cache from Supabase.
+// (via /api/reviews/refresh on a 6h cron) and calls revalidatePath
+// to invalidate this page immediately on each successful pull, so
+// new reviews surface within seconds of the cron firing.
 export const revalidate = 3600;
 
-// Fallback dataset used until Supabase has real Google reviews. Once the
-// refresh endpoint has run at least once, real reviews take over.
-const FALLBACK_REVIEWS = [
-  {
-    rating: 5,
-    author: "Daniel K.",
-    location: "Burlingame",
-    vehicle: "2023 BMW M4",
-    body:
-      "They treated my M4 like a gallery piece. I picked it up and genuinely didn't recognize it — in the best way. Edges are perfectly tucked, no lift at 6 months.",
-  },
-  {
-    rating: 5,
-    author: "Priya S.",
-    location: "Palo Alto",
-    vehicle: "2024 Taycan",
-    body:
-      "Booked the full-body PPF after seeing their Instagram. Walked me through every panel before the install. The daily photos from the bay were such a nice touch.",
-  },
-  {
-    rating: 5,
-    author: "James O.",
-    location: "SSF",
-    vehicle: "2022 Civic Type R",
-    body:
-      "I know I wasn't their highest-ticket client but they treated it like a Ferrari. Tint is flawless. No bubbles, no gap on the dot matrix.",
-  },
-  {
-    rating: 4,
-    author: "Sara L.",
-    location: "Daly City",
-    vehicle: "2024 Model Y",
-    body:
-      "Took a day longer than quoted but the result is immaculate. The team redid one door after I pointed out a tiny speck — no fuss, no charge.",
-  },
-  {
-    rating: 5,
-    author: "Ethan V.",
-    location: "Brisbane",
-    vehicle: "2023 GT3",
-    body:
-      "Full body PPF + 10-year ceramic. The car looks wet in the sun. Worth every cent and then some.",
-  },
-  {
-    rating: 5,
-    author: "Marcus T.",
-    location: "San Mateo",
-    vehicle: "2025 Tesla Model S Plaid",
-    body:
-      "Satin black full wrap. They sent me daily photos from the bay. Picked it up and almost couldn't tell it was the same car. Incredible work.",
-  },
-];
+// Direct link to leave a Google review for our Place ID. Pre-fills the
+// business so the visitor lands on the write-review modal in one click.
+const GOOGLE_REVIEW_URL =
+  "https://search.google.com/local/writereview?placeid=ChIJ0RT9mnJ5j4ARuk2F6yjaUqw";
 
 function timeAgo(iso) {
   if (!iso) return null;
@@ -81,34 +34,33 @@ async function loadReviews() {
       .order("created_at", { ascending: false })
       .limit(20);
 
-    if (error || !data || data.length === 0) {
-      return { reviews: FALLBACK_REVIEWS, source: "fallback" };
+    if (error || !data) {
+      return { reviews: [], avg: null, total: 0 };
     }
 
-    const normalized = data.map((r) => ({
+    const reviews = data.map((r) => ({
       rating: r.rating,
       body: r.body,
       author: r.author,
-      location: null, // Google reviews don't expose reviewer location
-      vehicle: r.vehicle, // typically null for Google; reserved for future enrichment
+      vehicle: r.vehicle,
       timeAgo: timeAgo(r.created_at),
     }));
 
     const avg =
-      normalized.reduce((s, r) => s + r.rating, 0) / normalized.length;
-    return { reviews: normalized, source: "google", avg, total: data.length };
+      reviews.length > 0
+        ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length
+        : null;
+
+    return { reviews, avg, total: reviews.length };
   } catch {
-    return { reviews: FALLBACK_REVIEWS, source: "fallback" };
+    return { reviews: [], avg: null, total: 0 };
   }
 }
 
 export default async function ReviewsPage() {
-  const { reviews, source, avg, total } = await loadReviews();
-
-  // Aggregate stats: real numbers when Supabase has data, brand-trust
-  // hardcoded values for the fallback.
-  const displayAvg = source === "google" ? avg.toFixed(1) : "4.9";
-  const displayTotal = source === "google" ? `${total} reviews` : "148 reviews";
+  const { reviews, avg, total } = await loadReviews();
+  const hasReviews = reviews.length > 0;
+  const displayAvg = avg ? avg.toFixed(1) : null;
 
   return (
     <Screen title="Reviews">
@@ -120,7 +72,9 @@ export default async function ReviewsPage() {
         }}
       >
         <Ey>
-          {displayAvg} · {displayTotal}
+          {hasReviews
+            ? `${displayAvg} · ${total} ${total === 1 ? "review" : "reviews"}`
+            : "From our owners"}
         </Ey>
         <SH
           size="clamp(34px, 4vw, 56px)"
@@ -128,25 +82,27 @@ export default async function ReviewsPage() {
         >
           From our owners.
         </SH>
-        <div style={{ display: "flex", gap: 8, marginBottom: 4 }}>
-          {"★★★★★".split("").map((_, i) => (
-            <span key={i} style={{ color: "var(--accent)", fontSize: 20 }}>
-              ★
-            </span>
-          ))}
-          <div
-            style={{
-              fontFamily: "var(--mono)",
-              fontSize: 11,
-              color: "var(--mute)",
-              alignSelf: "center",
-              marginLeft: 4,
-              letterSpacing: ".12em",
-            }}
-          >
-            {displayAvg} AVERAGE
+        {hasReviews && (
+          <div style={{ display: "flex", gap: 8, marginBottom: 4 }}>
+            {"★★★★★".split("").map((_, i) => (
+              <span key={i} style={{ color: "var(--accent)", fontSize: 20 }}>
+                ★
+              </span>
+            ))}
+            <div
+              style={{
+                fontFamily: "var(--mono)",
+                fontSize: 11,
+                color: "var(--mute)",
+                alignSelf: "center",
+                marginLeft: 4,
+                letterSpacing: ".12em",
+              }}
+            >
+              {displayAvg} AVERAGE
+            </div>
           </div>
-        </div>
+        )}
       </section>
       <section
         className="container-narrow"
@@ -155,60 +111,101 @@ export default async function ReviewsPage() {
           paddingBottom: "clamp(36px, 5vw, 80px)",
         }}
       >
-        {reviews.map((r, i) => (
+        {hasReviews ? (
+          reviews.map((r, i) => (
+            <div
+              key={i}
+              style={{
+                padding: "clamp(20px, 2.5vw, 36px) 0",
+                borderBottom: "1px solid var(--line)",
+              }}
+            >
+              <div style={{ display: "flex", gap: 2 }}>
+                {"★★★★★".split("").map((_, j) => (
+                  <span
+                    key={j}
+                    style={{
+                      color: "var(--accent)",
+                      opacity: j < r.rating ? 1 : 0.2,
+                      fontSize: 14,
+                    }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--serif)",
+                  fontStyle: "italic",
+                  fontSize: "clamp(18px, 2vw, 24px)",
+                  lineHeight: 1.45,
+                  marginTop: 12,
+                }}
+              >
+                &ldquo;{r.body}&rdquo;
+              </div>
+              <div
+                style={{
+                  marginTop: 16,
+                  display: "flex",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: 8,
+                }}
+              >
+                <Ey>
+                  {r.author}
+                </Ey>
+                {(r.vehicle || r.timeAgo) && (
+                  <Ey style={{ color: "var(--accent)" }}>
+                    {r.vehicle || r.timeAgo}
+                  </Ey>
+                )}
+              </div>
+            </div>
+          ))
+        ) : (
           <div
-            key={i}
             style={{
-              padding: "clamp(20px, 2.5vw, 36px) 0",
+              padding: "clamp(40px, 6vw, 80px) 0",
+              textAlign: "center",
+              borderTop: "1px solid var(--line)",
               borderBottom: "1px solid var(--line)",
             }}
           >
-            <div style={{ display: "flex", gap: 2 }}>
-              {"★★★★★".split("").map((_, j) => (
-                <span
-                  key={j}
-                  style={{
-                    color: "var(--accent)",
-                    opacity: j < r.rating ? 1 : 0.2,
-                    fontSize: 14,
-                  }}
-                >
-                  ★
-                </span>
-              ))}
-            </div>
             <div
               style={{
                 fontFamily: "var(--serif)",
                 fontStyle: "italic",
-                fontSize: "clamp(18px, 2vw, 24px)",
-                lineHeight: 1.45,
-                marginTop: 12,
+                fontSize: "clamp(20px, 2.4vw, 28px)",
+                lineHeight: 1.4,
+                color: "var(--bone)",
+                marginBottom: 20,
               }}
             >
-              &ldquo;{r.body}&rdquo;
+              Reviews coming in soon.
             </div>
-            <div
+            <a
+              href={GOOGLE_REVIEW_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
-                marginTop: 16,
-                display: "flex",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: 8,
+                display: "inline-block",
+                color: "var(--accent)",
+                fontFamily: "var(--mono)",
+                fontSize: 11,
+                letterSpacing: ".18em",
+                textTransform: "uppercase",
+                textDecoration: "none",
+                padding: "12px 24px",
+                border: "1px solid var(--accent)",
               }}
             >
-              <Ey>
-                {r.author}
-                {r.location ? ` · ${r.location}` : ""}
-              </Ey>
-              {(r.vehicle || r.timeAgo) && (
-                <Ey style={{ color: "var(--accent)" }}>
-                  {r.vehicle || r.timeAgo}
-                </Ey>
-              )}
-            </div>
+              Be the first to leave one →
+            </a>
           </div>
-        ))}
+        )}
       </section>
     </Screen>
   );
