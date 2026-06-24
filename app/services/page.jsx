@@ -23,7 +23,7 @@ const CATS = [
     from: "$1,895",
     bullets: [
       "Front partial · full front · full body",
-      "10-year self-healing XPEL film",
+      "10-year self-healing 3M Scotchgard Pro Series",
       "Track packages available",
     ],
   },

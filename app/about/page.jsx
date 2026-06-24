@@ -6,10 +6,10 @@ import { Ey, SH, GBtn, Crest, Ph } from "../_lib/design";
 import { Screen } from "../_components/screen-shell";
 
 const CERTS = [
-  ["XPEL Authorized", "PPF"],
-  ["Llumar FormulaOne", "Tint"],
+  ["3M Authorized Installer", "PPF"],
+  ["3M Ceramic IR Specialist", "Tint"],
   ["IDA Member", "Detailing"],
-  ["Avery SW900", "Vinyl"],
+  ["3M 2080 Specialist", "Vinyl"],
 ];
 
 const CONTACT = [

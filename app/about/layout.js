@@ -1,7 +1,7 @@
 export const metadata = {
   title: "The Studio",
   description:
-    "MODA Auto Studio is a two-person premium automotive finishing studio at 52 S Linden Ave #2, South San Francisco. By appointment only. XPEL Authorized, Llumar FormulaOne Specialist, IDA Member, Avery SW900 Select.",
+    "MODA Auto Studio is a two-person premium automotive finishing studio at 52 S Linden Ave #2, South San Francisco. By appointment only. 3M Authorized Installer, 3M Ceramic IR Specialist, IDA Member, 3M 2080 Specialist.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "The Studio · MODA Auto Studio",

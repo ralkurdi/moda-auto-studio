@@ -85,7 +85,7 @@ export const SERVICE_CATALOG = [
     materials: ["3M Ceramic IR"],
     warranty: "10-year manufacturer warranty",
     detail:
-      "Pairs with factory rear tint or existing back-window film. California law requires 70%+ VLT on front doors — we install the legal complement.",
+      "Pairs with factory rear tint or existing back-window film to match the look. Matched VLT, no purple shift, ceramic IR rejection.",
   },
   {
     id: "tint-sides-back",
@@ -109,7 +109,7 @@ export const SERVICE_CATALOG = [
     materials: ["3M Ceramic IR (70% VLT)"],
     warranty: "10-year manufacturer warranty",
     detail:
-      "Clear ceramic film at 70% VLT — fully street-legal in California. Rejects up to 95% of infrared heat through the largest window on your car.",
+      "Clear ceramic film at 70% VLT. Rejects up to 95% of infrared heat through the largest window on your car.",
   },
   {
     id: "ceramic5",
