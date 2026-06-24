@@ -1,14 +1,13 @@
+// Standalone /services/paint-correction page no longer exists — the
+// route now redirects to /services/ceramic-coating, which carries the
+// combined Ceramic + Paint Correction content. Canonical points to
+// the merged page so search engines reconcile cleanly.
 export const metadata = {
   title: "Paint Correction",
   description:
-    "Multi-stage machine polish with Rupes BigFoot polishers and Menzerna 3-step compounds. Removes swirl marks, oxidation, holograms. 1-stage, 2-stage, and 3-stage programs. Required prep before ceramic coating. Starting at $695. South San Francisco.",
-  alternates: { canonical: "/services/paint-correction" },
-  openGraph: {
-    title: "Paint Correction · MODA Auto Studio",
-    description:
-      "Cut, refine, finish. Multi-stage polish to remove swirl and oxidation. Required prep before ceramic.",
-    url: "/services/paint-correction",
-  },
+    "Multi-stage machine polish to remove swirl marks, oxidation, and light scratches. Required prep before ceramic coating. Now combined with Ceramic Coating on a single service page.",
+  alternates: { canonical: "/services/ceramic-coating" },
+  robots: { index: false, follow: true },
 };
 
 export default function PaintCorrectionLayout({ children }) {

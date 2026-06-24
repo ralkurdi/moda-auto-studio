@@ -5,44 +5,45 @@ import { Ey, SH, GBtn } from "../_lib/design";
 import { Screen } from "../_components/screen-shell";
 
 const BUNDLES = [
-  ["Essential", "$3,995", "Front PPF + 5yr ceramic + full tint"],
+  ["Essential", "$3,395", "Front PPF + ceramic + full tint"],
   [
     "Signature — most popular",
-    "$6,495",
-    "Full front PPF + 5yr ceramic + full tint + 1yr detail",
+    "$5,995",
+    "Full front PPF + ceramic + full tint + 1yr detail",
   ],
   [
     "Concours",
-    "$11,995",
-    "Full-body PPF + 9yr ceramic + full tint + 2yr detail",
+    "$10,995",
+    "Full-body PPF + ceramic + full tint + 2yr detail",
   ],
-  ["Tesla / EV", "$4,995–$6,495", "Optimized for Tesla, Lucid, Rivian"],
-  ["Track Day", "$3,495", "Front PPF + windshield ceramic + headlight PPF"],
+  ["Tesla / EV", "$4,495–$5,995", "Optimized for Tesla, Lucid, Rivian"],
+  ["Track Day", "$3,295", "Front PPF + windshield ceramic + headlight PPF"],
 ];
 
 const GROUPS = [
   {
-    head: "Vinyl wraps",
+    head: "Vinyl wraps · full color change",
     rows: [
+      ["Coupe", "$3,000"],
+      ["Sedan", "$4,500"],
+      ["SUV", "$5,500"],
+      ["Exotic", "Custom inquiry"],
       ["Partial accent (roof, hood, mirrors)", "$1,200–$2,400"],
-      ["Full color change · sedan", "$4,500–$5,200"],
-      ["Full color change · SUV / truck", "$5,200–$6,500"],
-      ["Full color change · exotic", "$6,500+"],
       ["Satin chrome / flip films", "+20%"],
     ],
   },
   {
-    head: "Paint Protection Film",
+    head: "Paint Protection Film · 3M Scotchgard Pro Series",
     rows: [
-      ["Partial front (bumper, hood strip)", "$950"],
-      ["Full front (bumper, hood, fenders, mirrors)", "$1,895"],
-      ["Full body", "$5,995–$7,800"],
+      ["Partial front (bumper, hood strip)", "Starting at $950"],
+      ["Full front (bumper, hood, fenders, mirrors)", "Starting at $1,895"],
+      ["Full body", "Starting at $5,995"],
       ["Track package (rockers, A-pillars)", "+$695"],
       ["Headlight PPF add-on", "$295"],
     ],
   },
   {
-    head: "Window tinting",
+    head: "Window tinting · 3M Ceramic IR",
     rows: [
       ["Sedan · full vehicle", "$1,295"],
       ["SUV / Tesla Model Y", "$1,395"],
@@ -51,20 +52,22 @@ const GROUPS = [
     ],
   },
   {
-    head: "Ceramic coating",
+    head: "Ceramic coating + paint correction",
     rows: [
-      ["3-year program", "$995"],
-      ["5-year program", "$1,495"],
-      ["9-year program", "$2,195"],
+      ["Sedan", "$695"],
+      ["SUV", "$795"],
+      ["Large SUV / Truck", "$895"],
       ["Interior ceramic", "$495"],
       ["Wheel / caliper ceramic", "$595"],
+      ["Pairs with PPF", "50% off ceramic"],
     ],
   },
   {
-    head: "Add-ons",
+    head: "Add-ons & custom",
     rows: [
-      ["Paint correction · 2-stage", "$1,195"],
-      ["Chrome delete", "$395–$595"],
+      ["Chrome delete", "Inquire for quote"],
+      ["Custom decals", "Inquire for quote"],
+      ["Commercial fleet graphics", "Inquire for quote"],
       ["Headlight tint (smoked)", "$195"],
     ],
   },

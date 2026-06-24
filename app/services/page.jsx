@@ -41,23 +41,12 @@ const CATS = [
   {
     href: "/services/ceramic-coating",
     kicker: "Ceramic",
-    title: "Ceramic coating",
-    from: "$1,495",
+    title: "Ceramic coating & correction",
+    from: "$695",
     bullets: [
-      "9H gloss enhancement",
-      "5 / 9-year packages",
+      "9H gloss enhancement + paint correction prep",
+      "Sedan $695 · SUV $795 · Large SUV/Truck $895",
       "Pairs with PPF — attaches at 50% off",
-    ],
-  },
-  {
-    href: "/services/paint-correction",
-    kicker: "Correction",
-    title: "Paint correction",
-    from: "$1,195",
-    bullets: [
-      "1 & 2-stage polish",
-      "Pre-coat prep",
-      "Swirl & oxidation removal",
     ],
   },
   {

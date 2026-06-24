@@ -13,7 +13,6 @@ const ROUTES = [
   { path: "/services/paint-protection-film", priority: 0.8, freq: "monthly" },
   { path: "/services/window-tint", priority: 0.8, freq: "monthly" },
   { path: "/services/ceramic-coating", priority: 0.8, freq: "monthly" },
-  { path: "/services/paint-correction", priority: 0.8, freq: "monthly" },
   { path: "/services/chrome-delete", priority: 0.8, freq: "monthly" },
   { path: "/visualizer", priority: 0.6, freq: "monthly" },
   { path: "/work", priority: 0.8, freq: "weekly" },

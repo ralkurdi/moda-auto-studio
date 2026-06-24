@@ -24,9 +24,10 @@ const SERVICE_INTEREST_OPTIONS = [
   "Vinyl wrap",
   "Paint Protection Film",
   "Window tinting",
-  "Ceramic coating",
-  "Paint correction",
+  "Ceramic coating + paint correction",
   "Chrome delete",
+  "Custom decals",
+  "Fleet graphics",
   "Not sure / multiple",
 ];
 

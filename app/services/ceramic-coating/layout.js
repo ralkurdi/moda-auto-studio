@@ -1,12 +1,12 @@
 export const metadata = {
-  title: "Ceramic Coating",
+  title: "Ceramic Coating & Paint Correction",
   description:
-    "9H SiO2 ceramic coatings from Gtechniq Crystal Serum, CarPro CQuartz UK 3.0, and IGL Kenzo. 3-year, 5-year, and 9-year programs. Hydrophobic, gloss-enhancing, UV-stable. Starting at $995. Pairs with PPF at 50% off.",
+    "9H SiO2 ceramic coating from Gtechniq, CarPro, and IGL. Multi-stage paint correction included as prep. Sedan $695 · SUV $795 · Large SUV / Truck $895. South San Francisco.",
   alternates: { canonical: "/services/ceramic-coating" },
   openGraph: {
-    title: "Ceramic Coating · MODA Auto Studio",
+    title: "Ceramic Coating & Paint Correction · MODA Auto Studio",
     description:
-      "9H glass-hard SiO2 nano-coating. Gtechniq, CQuartz, IGL. 3, 5, and 9-year programs.",
+      "9H glass-hard SiO2 nano-coating with paint correction prep. Sedan $695 · SUV $795 · Large SUV/Truck $895.",
     url: "/services/ceramic-coating",
   },
 };

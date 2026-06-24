@@ -4,31 +4,29 @@ import { useRouter } from "next/navigation";
 import { Ey, SH, GBtn, Rule, Ph } from "../../_lib/design";
 import { Screen } from "../../_components/screen-shell";
 
-const PROGRAMS = [
+// Pricing matches the studio next door (Viliura Detailing at 52 S Linden)
+// so cross-shopping clients see the same number on both sites. Flat 3-tier
+// vehicle-size pricing for ceramic, quote-based for paint correction.
+const CERAMIC_TIERS = [
   {
-    name: "3-Year",
-    from: "$995",
-    desc: "Single-layer SiO2 coating with 9H surface hardness. Hydrophobic, gloss-enhancing.",
+    name: "Sedan",
+    from: "$695",
+    desc: "Coupes, hatches, and standard 4-door sedans.",
   },
   {
-    name: "5-Year",
-    from: "$1,495",
-    desc: "Two-layer system preceded by single-stage correction. Most popular tier.",
+    name: "SUV",
+    from: "$795",
+    desc: "Crossovers, mid-size SUVs, and small trucks.",
   },
   {
-    name: "9-Year",
-    from: "$2,195",
-    desc: "Three layers + base + topcoat. Two-stage correction. Annual maintenance included.",
-  },
-  {
-    name: "Interior · Wheels",
-    from: "+$495",
-    desc: "Add-ons. Leather/Alcantara coating + caliper/wheel-face ceramic. Stain and brake-dust shedding.",
+    name: "Large SUV / Truck",
+    from: "$895",
+    desc: "Full-size SUVs (Suburban, Tahoe), pickups, G-Wagons.",
   },
 ];
 
 const COATINGS = [
-  { n: "Gtechniq Crystal Serum Ultra", note: "9H base, 5-7 yr" },
+  { n: "Gtechniq Crystal Serum Ultra", note: "9H base, 5–7 yr" },
   { n: "CarPro CQuartz UK 3.0", note: "Hydrophobic, 5 yr" },
   { n: "IGL Kenzo", note: "Solvent-free, 9 yr" },
   { n: "Gtechniq EXOv5", note: "Hydrophilic topcoat" },
@@ -36,7 +34,7 @@ const COATINGS = [
 
 const TIMELINE = [
   ["Day 1", "Intake, wash, decon, iron + tar removal, claybar"],
-  ["Day 2", "Paint correction · cut + polish to swirl-free finish"],
+  ["Day 2", "Paint correction — cut + polish to swirl-free finish"],
   ["Day 3", "IPA wipe, panel-by-panel coating application, cure"],
   ["Day 4", "Final QC under controlled lighting, photo handoff"],
 ];
@@ -44,7 +42,7 @@ const TIMELINE = [
 export default function CeramicCoatingPage() {
   const router = useRouter();
   return (
-    <Screen title="Ceramic Coating">
+    <Screen title="Ceramic Coating & Paint Correction">
       <section style={{ flexShrink: 0 }}>
         <Ph
           h="clamp(240px, 40vh, 480px)"
@@ -60,7 +58,7 @@ export default function CeramicCoatingPage() {
       >
         <Ey style={{ color: "var(--accent)" }}>Glass-hard finish</Ey>
         <SH size="clamp(38px, 4.5vw, 64px)" style={{ marginTop: 8 }}>
-          Ceramic coating.
+          Ceramic coating &amp; paint correction.
         </SH>
         <div
           style={{
@@ -72,21 +70,23 @@ export default function CeramicCoatingPage() {
         >
           A 9H SiO2 nano-coating that bonds to your clearcoat, creating a
           glass-like hydrophobic layer. Water sheets off. Bird droppings and
-          tree sap wipe clean. UV stops fading the paint underneath. The
-          depth of gloss is what people notice first — especially on dark
-          colors.
+          tree sap wipe clean. UV stops fading the paint underneath. Multi-
+          stage machine polish to remove swirl marks, oxidation, and light
+          scratches is the required prep step before the coating — and the
+          difference between &ldquo;clean&rdquo; and &ldquo;wet-looking under
+          any light.&rdquo;
         </div>
 
         <Rule style={{ margin: "clamp(24px, 3vw, 40px) 0" }} />
 
-        <Ey>Programs</Ey>
+        <Ey>Ceramic coating · pricing</Ey>
         <div
-          className="grid-2"
+          className="grid-3"
           style={{ marginTop: "clamp(12px, 1.6vw, 24px)" }}
         >
-          {PROGRAMS.map((p) => (
+          {CERAMIC_TIERS.map((c) => (
             <div
-              key={p.name}
+              key={c.name}
               style={{
                 padding: "clamp(14px, 1.8vw, 22px)",
                 border: "1px solid var(--line)",
@@ -107,7 +107,7 @@ export default function CeramicCoatingPage() {
                     fontSize: "clamp(18px, 1.7vw, 22px)",
                   }}
                 >
-                  {p.name}
+                  {c.name}
                 </div>
                 <div
                   style={{
@@ -116,7 +116,7 @@ export default function CeramicCoatingPage() {
                     color: "var(--accent)",
                   }}
                 >
-                  {p.from}
+                  {c.from}
                 </div>
               </div>
               <div
@@ -126,10 +126,51 @@ export default function CeramicCoatingPage() {
                   lineHeight: 1.55,
                 }}
               >
-                {p.desc}
+                {c.desc}
               </div>
             </div>
           ))}
+        </div>
+
+        <Rule style={{ margin: "clamp(24px, 3vw, 40px) 0" }} />
+
+        <Ey>Paint correction</Ey>
+        <div
+          style={{
+            marginTop: "clamp(12px, 1.6vw, 20px)",
+            padding: "clamp(16px, 2vw, 24px)",
+            background: "var(--ink-2)",
+            border: "1px solid var(--line)",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--serif)",
+              fontSize: "clamp(22px, 2.4vw, 30px)",
+              lineHeight: 1.3,
+              color: "var(--bone)",
+            }}
+          >
+            Quoted per vehicle.{" "}
+            <span style={{ color: "var(--accent)" }}>
+              Inquire for a custom quote.
+            </span>
+          </div>
+          <div
+            style={{
+              fontSize: "clamp(13px, 1.1vw, 15px)",
+              color: "var(--bone-2)",
+              marginTop: 12,
+              lineHeight: 1.6,
+            }}
+          >
+            Scope depends on the paint&rsquo;s starting condition and the
+            stage required. A single-stage polish handles light swirl on a
+            newer car. A two-stage compound + polish is the most common
+            prep for ceramic. Three-stage concours is reserved for oxidized,
+            neglected, or pre-show vehicles. We&rsquo;ll evaluate at intake
+            or from photos before quoting.
+          </div>
         </div>
 
         <Rule style={{ margin: "clamp(24px, 3vw, 40px) 0" }} />
@@ -167,7 +208,7 @@ export default function CeramicCoatingPage() {
         <Rule style={{ margin: "clamp(28px, 4vw, 56px) 0" }} />
 
         <div>
-          <Ey>Timeline · 5-Year Program</Ey>
+          <Ey>Timeline · ceramic with 2-stage correction</Ey>
           {TIMELINE.map(([d, t], i) => (
             <div
               key={i}
@@ -213,35 +254,13 @@ export default function CeramicCoatingPage() {
           >
             Ceramic over Paint Protection Film extends the PPF&rsquo;s life
             and adds the same hydrophobic feel across the whole car. When
-            both are booked together, ceramic attaches at <span style={{ color: "var(--accent)" }}>50% off</span>.
+            both are booked together, ceramic attaches at{" "}
+            <span style={{ color: "var(--accent)" }}>50% off</span>.
           </div>
         </div>
 
-        <div
-          style={{
-            marginTop: "clamp(20px, 2.5vw, 36px)",
-            padding: "clamp(14px, 1.8vw, 24px)",
-            background: "var(--ink-2)",
-            border: "1px solid var(--line)",
-          }}
-        >
-          <Ey>Starting at</Ey>
-          <div
-            style={{
-              fontFamily: "var(--serif)",
-              fontSize: "clamp(32px, 3.6vw, 48px)",
-              marginTop: 4,
-              color: "var(--bone)",
-            }}
-          >
-            $1,495{" "}
-            <span style={{ fontSize: "clamp(14px, 1.2vw, 17px)", color: "var(--mute)" }}>
-              sedan · 5-year program
-            </span>
-          </div>
-        </div>
         <GBtn
-          style={{ width: "100%", marginTop: 16 }}
+          style={{ width: "100%", marginTop: "clamp(20px, 2.5vw, 36px)" }}
           onClick={() => router.push("/book")}
         >
           Reserve a bay

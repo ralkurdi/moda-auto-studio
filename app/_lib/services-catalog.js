@@ -114,30 +114,14 @@ export const SERVICE_CATALOG = [
   {
     id: "ceramic5",
     category: "Ceramic",
-    title: "Ceramic Coating · 5-Year",
-    time: "2 days",
-    base: [800, 1800],
-    tagline: "9H glass-hard finish. The depth of glass.",
+    title: "Ceramic Coating + Paint Correction",
+    time: "3–4 days",
+    base: [695, 895],
+    tagline: "9H glass-hard finish. Includes paint correction prep.",
     materials: ["Gtechniq Crystal Serum", "CQuartz UK 3.0", "IGL Kenzo"],
-    warranty: "5-year manufacturer-backed",
+    warranty: "Multi-year manufacturer-backed",
     detail:
-      "Two-layer SiO2 coating preceded by single-stage paint correction. Hydrophobic, chemical-resistant, UV-stable. Boosts gloss noticeably on dark colors.",
-  },
-  {
-    id: "correction",
-    category: "Correction",
-    title: "Paint Correction · 2-Stage",
-    time: "1–2 days",
-    base: [800, 1400],
-    tagline: "Cut, refine, finish. Swirl-free under any light.",
-    materials: [
-      "Rupes BigFoot polishers",
-      "Lake Country Microfiber",
-      "Menzerna 3-step compound",
-    ],
-    warranty: "Pre-coating prep — backed by ceramic",
-    detail:
-      "Compound + polish to remove swirl marks, oxidation, holograms, and light scratches. Required prep step before any ceramic coating.",
+      "SiO2 coating preceded by multi-stage paint correction. Hydrophobic, chemical-resistant, UV-stable. Boosts gloss noticeably on dark colors. Pricing varies by vehicle size — sedan $695, SUV $795, large SUV/truck $895.",
   },
 ];
 
