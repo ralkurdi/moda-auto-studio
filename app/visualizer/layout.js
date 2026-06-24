@@ -1,12 +1,12 @@
 export const metadata = {
-  title: "Color Visualizer",
+  title: "Color Studio",
   description:
-    "Preview color-change vinyl wrap finishes on your vehicle. 8 signature colors from satin black to lavender flip. Cast films with 10-year warranty.",
+    "Preview the full Avery Dennison Supreme Wrapping Film lineup on your make and model — satin, gloss, matte, chrome, color-flip. We install Avery Dennison cast films, so what you see is what you get.",
   alternates: { canonical: "/visualizer" },
   openGraph: {
-    title: "Color Visualizer · MODA Auto Studio",
+    title: "Color Studio · MODA Auto Studio",
     description:
-      "Preview wrap finishes on your car. Satin, gloss, chrome, color-flip.",
+      "Preview wrap finishes on your car via Avery Dennison's official visualizer.",
     url: "/visualizer",
   },
 };
