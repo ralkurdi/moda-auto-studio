@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { supabaseServer } from "../../../_lib/supabase/server";
 import { fetchPlaceReviews, normalizeReview } from "../../../_lib/google-places";
 
@@ -56,6 +57,11 @@ async function refresh() {
       { status: 500 }
     );
   }
+
+  // Invalidate the ISR cache for /reviews so the next visitor regenerates
+  // against fresh Supabase data instead of waiting up to the page's
+  // 1-hour revalidate window.
+  revalidatePath("/reviews");
 
   return NextResponse.json({
     ok: true,
