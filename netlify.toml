@@ -19,3 +19,10 @@
 # resolves to a 20.x LTS line). Adjust if we ever bump local Node.
 [build.environment]
   NODE_VERSION = "20"
+
+# Scheduled Function — pulls fresh Google reviews into Supabase every 6 hours.
+# Cron expression: "minute hour day-of-month month day-of-week" (UTC).
+# 00:00, 06:00, 12:00, 18:00 UTC daily. Google's Place Details cache typically
+# refreshes once a day on their end, so 4x/day is the practical ceiling.
+[functions."refresh-reviews"]
+  schedule = "0 */6 * * *"
